@@ -1,0 +1,29 @@
+post-list {
+	ion-card{
+		.posted, .categories{
+			font-size: 1.1rem;
+		}
+
+		.shortcontent{
+			padding-top: 18px;
+			font-size: 1.2rem;
+
+			h1, h2, h3, h4, h5, h6{
+				font-weight: 500;
+				font-size: 1.5rem;
+			}
+
+			img{
+				display: none;
+			}
+		}
+
+		ion-slides{
+			padding-top: 18px;
+		}
+
+		.buttons{
+			padding-top: 18px;
+		}
+	}
+}

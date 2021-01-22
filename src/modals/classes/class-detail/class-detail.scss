@@ -1,0 +1,18 @@
+modal-class-detail {
+	ion-card{
+		.image{
+			position: relative;
+			height: 175px;
+			overflow: hidden;
+
+			img{
+				position: absolute;
+				top: 0; right: 0; bottom: 0; left: 0;
+			}
+		}
+
+		.buttons{
+			margin-bottom: 18px;
+		}
+	}
+}

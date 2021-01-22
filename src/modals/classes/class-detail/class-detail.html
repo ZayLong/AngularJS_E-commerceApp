@@ -1,0 +1,33 @@
+<ion-content padding>
+
+	<ion-card id="detail-card">
+		<ion-card-header>
+			{{ class.name }}
+		</ion-card-header>
+
+		<section class="image">
+			<img [src]="class.product.imagePath()" />
+		</section>
+
+		<ion-card-content>
+			<section class="buttons">
+				<button ion-button icon-only color="secondary" (click)="cartProvider.processAddToCart(cart, class.product, 1, logged)">
+					<ion-icon name="cart"></ion-icon>
+				</button>
+
+				<button ion-button icon-only color="secondary" [disabled]="disableCalendarButton" (click)="addToCalendar(class)">
+					<ion-icon name="calendar"></ion-icon>
+				</button>
+			</section><!--.buttons-->
+
+			<section class="description">
+				<div [innerHtml]="class.product.get_custom_attribute('description').value"></div>
+			</section><!--.description-->
+		</ion-card-content>
+	</ion-card>
+
+</ion-content>
+
+<ion-footer padding>
+	<button ion-button block (click)="dismiss()">Close</button>
+</ion-footer>

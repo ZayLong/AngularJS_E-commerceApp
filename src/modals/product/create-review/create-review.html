@@ -1,0 +1,71 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+			<h2>Create Review</h2>
+		</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<h2 class="product title">{{ yotpoProduct.name }}</h2>
+
+	<form [formGroup]="reviewForm">
+		<ion-item class="star-rating">
+			<ion-icon [name]="starOne" color="secondary" (click)="starRating(1)"></ion-icon>
+			<ion-icon [name]="starTwo" color="secondary" (click)="starRating(2)"></ion-icon>
+			<ion-icon [name]="starThree" color="secondary" (click)="starRating(3)"></ion-icon>
+			<ion-icon [name]="starFour" color="secondary" (click)="starRating(4)"></ion-icon>
+			<ion-icon [name]="starFive" color="secondary" (click)="starRating(5)"></ion-icon>
+		</ion-item>
+
+		<ion-item *ngIf="reviewForm.controls.star.invalid && (reviewForm.controls.star.dirty || reviewForm.controls.star.touched)" no-lines class="errors">
+			<p *ngIf="reviewForm.controls.star.errors.required">Please vote either one (1) or five (5) stars.</p>
+			<p *ngIf="reviewForm.controls.star.errors.pattern">Star rating is invalid.</p>
+		</ion-item>
+
+		<ion-item>
+			<ion-label stacked><span class="required">*</span> Your Name</ion-label>
+			<ion-input type="text" formControlName="name"></ion-input>
+		</ion-item>
+
+		<ion-item *ngIf="reviewForm.controls.name.invalid && (reviewForm.controls.name.dirty || reviewForm.controls.name.touched)" no-lines class="errors">
+			<p *ngIf="reviewForm.controls.name.errors.required">Name is required.</p>
+		</ion-item>
+
+		<ion-item>
+			<ion-label stacked><span class="required">*</span> Email</ion-label>
+			<ion-input type="email" formControlName="email"></ion-input>
+		</ion-item>
+
+		<ion-item *ngIf="reviewForm.controls.email.invalid && (reviewForm.controls.email.dirty || reviewForm.controls.email.touched)" no-lines class="errors">
+			<p *ngIf="reviewForm.controls.email.errors.required">Email is required.</p>
+			<p *ngIf="reviewForm.controls.email.errors.pattern">Email address is invalid.</p>
+		</ion-item>
+
+		<ion-item>
+			<ion-label stacked><span class="required">*</span> Title</ion-label>
+			<ion-input type="text" formControlName="title"></ion-input>
+		</ion-item>
+
+		<ion-item *ngIf="reviewForm.controls.title.invalid && (reviewForm.controls.title.dirty || reviewForm.controls.title.touched)" no-lines class="errors">
+			<p *ngIf="reviewForm.controls.title.errors.required">Review title is required.</p>
+		</ion-item>
+
+		<ion-item>
+			<ion-label stacked><span class="required">*</span> Review</ion-label>
+			<ion-textarea formControlName="review"></ion-textarea>
+		</ion-item>
+
+		<ion-item *ngIf="reviewForm.controls.review.invalid && (reviewForm.controls.review.dirty || reviewForm.controls.review.touched)" no-lines class="errors">
+			<p *ngIf="reviewForm.controls.review.errors.required">Review content is required.</p>
+		</ion-item>
+
+		<button ion-button color="secondary" (click)="submit()">
+			Submit Review
+		</button>
+	</form>
+</ion-content>
+
+<ion-footer padding>
+	<button ion-button block (click)="dismiss()">Close</button>
+</ion-footer>

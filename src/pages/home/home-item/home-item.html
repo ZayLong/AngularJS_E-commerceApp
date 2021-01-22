@@ -1,0 +1,33 @@
+<div class="product">
+	<div class="show-product" *ngIf="item.action.hide_product == false">
+		<div class="click-area" (click)="gotoProduct(item.product)" (press)="productPopover(item)">
+			<ion-badge class="tag" color="secondary" *ngIf="tag != undefined">{{ tag.label }}</ion-badge>
+
+			<img [src]="item.product.imageThumbnailPath()" />
+			
+			<p class="title" *ngIf="item.product.name.length > 25">{{ item.product.name | slice:0:25 }}...</p>
+
+			<p class="title" *ngIf="item.product.name.length <= 25">{{ item.product.name }}</p>
+		</div><!--.click-area-->
+
+		<ion-grid class="product-buttons">
+			<ion-row>
+				<ion-col col-6 *ngIf="canAddToCart">
+					<button ion-button icon-only outline (click)="cartProvider.processAddToCart(cart, item.product, 1, logged)">
+						<ion-icon name="cart"></ion-icon>
+					</button>
+				</ion-col>
+
+				<!--KEEP FOR LATER
+				<ion-col col-6 *ngIf="item.action.hide_compare == false">
+					<button ion-button icon-only outline (click)="addToCompare(item.product)">
+						<ion-icon name="stats"></ion-icon>
+					</button>
+				</ion-col>
+				-->
+			</ion-row>
+		</ion-grid><!--.product-buttons-->
+	</div><!--.show-product-->
+
+	<div class="hide-product" *ngIf="item.action.hide_product"></div><!--.hide-product-->
+</div><!--.product-->

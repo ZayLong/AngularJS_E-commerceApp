@@ -1,0 +1,31 @@
+page-profile-address {
+	.default{
+		.buttons{
+			padding-top: 9px;
+		}
+		
+		.change-default{
+			font-size: 10px;
+			font-style: italic;
+		}
+
+		.call-support{
+			font-size: 1.1rem;
+		}
+	}
+
+	.new-address-button{
+		margin-bottom: 9px;
+	}
+
+	#additional-address{
+		.additional-address-slide{
+			padding: 4px 0px 36px;
+		}
+
+		.slide-zoom{
+			padding: 0 16px;
+			text-align: left;
+		}
+	}
+}

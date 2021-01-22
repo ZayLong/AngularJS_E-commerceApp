@@ -1,0 +1,12 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+</ion-content>

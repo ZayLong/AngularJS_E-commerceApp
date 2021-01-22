@@ -1,0 +1,146 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="logged">
+		<div *ngIf="cart != undefined">
+			<header id="profile-header" padding>
+				<h1 class="header">My Dashboard</h1>
+			</header><!--#profile-header-->
+
+			<ion-grid id="dashboard">
+				<ion-row>
+					<ion-col col-12>
+						<ion-card id="account-information-card">
+							<ion-card-header>
+								Account Information
+							</ion-card-header>
+
+							<ion-card-content>
+								<h3>{{ cart.customer.fullName() }}</h3>
+								<p>{{ cart.customer.email }}</p>
+
+								<div class="buttons">
+									<button ion-button small (click)="gotoPage('ProfileAccountPage')">Edit Account</button>
+								</div><!--.buttons-->
+							</ion-card-content>
+						</ion-card><!--#account-information-->
+					</ion-col>
+
+					<ion-col col-12 col-sm-6>
+						<ion-card id="recent-orders-card">
+							<ion-card-header>
+								Recent Orders
+							</ion-card-header>
+
+							<ion-card-content>
+								<div *ngIf="loadingOrders == false">
+									<ion-slides #recentOrdersSlide *ngIf="recentOrders != null" loop="true" pager="true" zoom="false">
+										<ion-slide *ngFor="let order of recentOrders" class="recent-order-slide">
+											<h3 class="title">{{ order.increment_id }}  <ion-icon name="phone-portrait" *ngIf="order.extension_attributes.from_app == true"></ion-icon></h3>
+											<p class="date">{{ order.created_at | date: 'shortDate' }}</p>
+											<p class="customer-name">{{ order.fullCustomerName() }}</p>
+											<p class="total">{{ order.base_grand_total | currency }}</p>
+											<p class="status">{{ order.state }}</p> <!--website uses state for their order tables, instead of status-->
+
+											<div class="buttons">
+												<button ion-button small (click)="viewOrderModal(order)">View</button>
+												<button ion-button small (click)="reorder(order)">Reorder</button>
+											</div><!--.buttons-->
+										</ion-slide>
+									</ion-slides><!--#recentOrdersSlide-->
+
+									<div *ngIf="recentOrders == undefined || recentOrders.length <= 0">
+										<h3>No Recent Orders Made</h3>
+									</div>
+								</div>
+
+								<p *ngIf="loadingOrders == true">Retrieving Orders</p>
+
+								<div class="buttons">
+									<button ion-button small (click)="gotoPage('ProfileOrdersPage')">View All Orders</button>
+								</div><!--.buttons-->
+							</ion-card-content>
+						</ion-card><!--#recent-orders-->
+					</ion-col>
+
+					<ion-col col-12 col-sm-6>
+						<ion-card id="default-addresses-card">
+							<ion-card-header>
+								Address Book
+							</ion-card-header>
+
+							<ion-card-content>
+								<div class="address billing-address">
+									<h3>Billing Address</h3>
+
+									<div *ngIf="cart.customer.default_billing">
+										<p class="customer-name">{{ cart.customer.defaultBillingAddress().fullName() }}</p>
+										<p class="street-address">{{ cart.customer.defaultBillingAddress().fullStreetAddress() }}</p>
+										<p class="metro-address">{{ cart.customer.defaultBillingAddress().fullMetroAddress() }}</p>
+										<p class="country">{{ cart.customer.defaultBillingAddress().country_id }}</p>
+										<p class="telephone">T: {{ cart.customer.defaultBillingAddress().telephone }}</p>
+									</div>
+
+									<div class="no-address billing-address" *ngIf="cart.customer.default_billing == null">
+										<p>Currently no default billing address.</p>
+									</div>	
+								</div><!--.billing-address-->
+
+								<div class="address shipping-address">
+									<h3>Shipping Address</h3>
+
+									<div *ngIf="cart.customer.default_shipping">
+										<p class="customer-name">{{ cart.customer.defaultShippingAddress().fullName() }}</p>
+										<p class="street-address">{{ cart.customer.defaultShippingAddress().fullStreetAddress() }}</p>
+										<p class="metro-address">{{ cart.customer.defaultShippingAddress().fullMetroAddress() }}</p>
+										<p class="country">{{ cart.customer.defaultShippingAddress().country_id }}</p>
+										<p class="telephone">T: {{ cart.customer.defaultShippingAddress().telephone }}</p>
+									</div>
+
+									<div *ngIf="cart.customer.default_shipping == null">
+										<p>Current no default shipping address.</p>
+									</div>	
+								</div><!--.shipping-address-->
+
+								<div class="address soldto-address">
+									<h3>Sold To Address</h3>
+
+									<div *ngIf="cart.customer.get_custom_attribute('default_sold').value">
+										<p class="customer-name">{{ cart.customer.defaultSoldToAddress().fullName() }}</p>
+										<p class="street-address">{{ cart.customer.defaultSoldToAddress().fullStreetAddress() }}</p>
+										<p class="metro-address">{{ cart.customer.defaultSoldToAddress().fullMetroAddress() }}</p>
+										<p class="country">{{ cart.customer.defaultSoldToAddress().country_id }}</p>
+										<p class="telephone">T: {{ cart.customer.defaultSoldToAddress().telephone }}</p>
+									</div>
+
+									<div *ngIf="cart.customer.get_custom_attribute('default_sold').value == null">
+										<p>Current no default sold to address.</p>
+									</div>	
+								</div><!--.soldto-address-->
+
+								<div class="buttons">
+									<button ion-button small (click)="gotoPage('ProfileAddressPage')">Manage Addresses</button>
+								</div><!--.buttons-->
+							</ion-card-content>
+						</ion-card><!--#default-addresses-->
+					</ion-col>
+				</ion-row>
+			</ion-grid><!--#dashboard-->
+		</div>
+
+		<loading *ngIf="cart == undefined"></loading>
+	</div>
+</ion-content>
+
+<ion-footer padding>
+	<profile-menu></profile-menu>
+</ion-footer>

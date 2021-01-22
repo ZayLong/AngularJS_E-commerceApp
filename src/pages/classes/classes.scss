@@ -1,0 +1,28 @@
+page-classes {
+	ion-list{
+		ion-label{
+			white-space: normal;
+		}
+
+		.name{ 
+			font-size: 1.4rem;
+			font-weight: 500;
+			word-wrap: normal;
+		}
+
+		.start,
+		.end{
+			font-size: 1.2rem;
+		}
+
+		ion-list-header.list-header{
+			background-color: color($colors, secondary);
+			color: #fff;
+
+			ion-label{
+				font-size: 1.5rem;
+				font-weight: 700;
+			}
+		}
+	}
+}

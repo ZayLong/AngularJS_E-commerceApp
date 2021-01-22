@@ -1,0 +1,139 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="logged">
+		<ion-grid>
+			<ion-row>
+				<ion-col col-12 col-sm-6>
+					<header id="profile-header">
+						<ion-grid>
+							<ion-row>
+								<ion-col col-9>
+									<h1 class="header">Address Book</h1>
+									<p class="subheader">To change your default addresses, please call customer service (1-800-362-6245).</p>
+								</ion-col>
+
+								<ion-col col-3 text-right>
+									<button ion-button icon-only color="secondary" (click)="commonProvider.callNumber('18003626245')">
+										<ion-icon name="call"></ion-icon>
+									</button>
+								</ion-col>
+							</ion-row>
+						</ion-grid>
+					</header><!--#profile-header-->
+				</ion-col>
+			</ion-row>
+
+			<ion-row>
+				<ion-col col-12 col-sm-6 col-md-4>
+					<ion-card id="shipping-address" class="default shipping address">
+						<ion-card-header>
+							Default Shipping Address
+						</ion-card-header>
+
+						<ion-card-content>
+							<div *ngIf="cart.customer.default_shipping">
+								<h3 class="customer-name">{{ cart.customer.defaultShippingAddress().fullName() }}</h3>
+								<p class="street-address">{{ cart.customer.defaultShippingAddress().fullStreetAddress() }}</p>
+								<p class="metro-address">{{ cart.customer.defaultShippingAddress().fullMetroAddress() }}</p>
+								<p class="telephone">{{ cart.customer.defaultShippingAddress().telephone }}</p>
+							</div>
+
+							<div *ngIf="cart.customer.default_shipping == null">
+								<p>Currently no default shipping address.</p>
+								<p class="call-support">Please call customer support to set your address.</p>
+							</div>
+						</ion-card-content>
+					</ion-card><!--#shipping-address-->
+				</ion-col>
+
+				<ion-col col-12 col-sm-6 col-md-4>
+					<ion-card id="billing-address" class="default billing address">
+						<ion-card-header>
+							Default Billing Address
+						</ion-card-header>
+
+						<ion-card-content>
+							<div *ngIf="cart.customer.default_billing">
+								<h3 class="customer-name">{{ cart.customer.defaultBillingAddress().fullName() }}</h3>
+								<p class="street-address">{{ cart.customer.defaultBillingAddress().fullStreetAddress() }}</p>
+								<p class="metro-address">{{ cart.customer.defaultBillingAddress().fullMetroAddress() }}</p>
+								<p class="telephone">{{ cart.customer.defaultBillingAddress().telephone }}</p>
+							</div>
+
+							<div *ngIf="cart.customer.default_billing == null">
+								<p>Currently no default billing address.</p>
+								<p class="call-support">Please call customer support to set your address.</p>
+							</div>
+						</ion-card-content>
+					</ion-card><!--#billing-address-->
+				</ion-col>
+
+				<ion-col col-12 col-sm-6 col-md-4>
+					<ion-card id="soldto-address" class="default soldto address">
+						<ion-card-header>
+							Default Sold To Address
+						</ion-card-header>
+
+						<ion-card-content>
+							<div *ngIf="cart.customer.get_custom_attribute('default_sold').value">
+								<h3 class="customer-name">{{ cart.customer.defaultSoldToAddress().fullName() }}</h3>
+								<p class="street-address">{{ cart.customer.defaultSoldToAddress().fullStreetAddress() }}</p>
+								<p class="metro-address">{{ cart.customer.defaultSoldToAddress().fullMetroAddress() }}</p>
+								<p class="telephone">{{ cart.customer.defaultSoldToAddress().telephone }}</p>
+							</div>
+
+							<div *ngIf="cart.customer.get_custom_attribute('default_sold').value == null">
+								<p>Currently no default sold to address.</p>
+								<p class="call-support">Please call customer support to set your address.</p>
+							</div>
+						</ion-card-content>
+					</ion-card><!--#billing-address-->
+				</ion-col>
+			</ion-row>
+			
+			<ion-row>
+				<ion-col col-12 col-sm-6 col-md-4>
+					<div *ngIf="additionalAddresses != undefined">
+						<ion-card id="additional-address" *ngIf="additionalAddresses.length > 0">
+							<ion-card-header>
+								Additional Addresses
+							</ion-card-header>
+
+							<ion-card-content>
+								<ion-slides #additionalAddressSlide loop="true" pager="true" zoom="false">
+									<ion-slide *ngFor="let address of additionalAddresses" class="additional-address-slide address">
+										<h3 class="customer-name">{{ address.fullName() }}</h3>
+										<p class="street-address">{{ address.fullStreetAddress() }}</p>
+										<p class="metro-address">{{ address.fullMetroAddress() }}</p>
+										<p class="telephone">T: {{ address.telephone }}</p>
+										<p class="token" *ngIf="address.get_custom_attribute('sap_address_token')?.value">
+											ID: {{ address.get_custom_attribute('sap_address_token')?.value }} <ion-icon name="information-circle" (click)="helpToken()"></ion-icon>
+										</p>
+									</ion-slide><!--.additional-address-->
+								</ion-slides><!--#additionalAddressSlide-->
+							</ion-card-content>
+						</ion-card><!--#additional-address-->
+					</div>
+
+					<!--<button ion-button block color="secondary" class="new-address-button" (click)="addAddressModal()">Add New Address</button>-->
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+
+	<loading *ngIf="logged == false"></loading>
+</ion-content>
+
+<ion-footer padding>
+	<profile-menu></profile-menu>
+</ion-footer>

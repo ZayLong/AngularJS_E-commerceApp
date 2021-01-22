@@ -1,0 +1,156 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content class="page-cart">
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="cart != undefined">
+		<section id="cart-items" *ngIf="cart.items.length <= 0">
+			<div id="no-items-cart">
+				<h1>Empty Cart</h1>
+
+				<button ion-button color="secondary" (click)="gotoPage('HomePage')">Go Back</button>
+			</div><!--#no-items-cart-->
+		</section><!--#cart-items-->
+
+		<ion-grid id="cart" *ngIf="cart.items.length > 0">
+			<ion-row id="cart-items">
+				<ion-col col-12>
+					
+					<ion-grid id="cart-table" *ngIf="showItemsLoading == false">
+						<ion-row *ngFor="let item of items; let i = index">
+							<ion-col col-2 class="image" (click)="imageModal(item.product_item)">
+								<img [src]="item.product_item.imageThumbnailPath()" />
+							</ion-col><!--.image-->
+
+							<ion-col col-10 class="text" (click)="gotoProduct(item.product_item)">
+								<h3 class="name">{{ item.product_item.name }}</h3>
+								<p class="sku">SKU: {{ item.product_item.sku }}</p>
+
+								<p class="price">{{ item.cart_item.subtotal() | currency }} <span class="subtotal" *ngIf="item.cart_item.qty > 1">({{ item.cart_item.price | currency }} ea.)</span> <span class="backorder item" *ngIf="item.product_item.isBackOrdered(item.stock_item)">Backordered</span></p>
+							</ion-col><!--.text-->
+
+							<ion-col col-12 *ngIf="cart.customer.isTaxExempt()">
+								<ion-item>
+									<ion-label>Taxable</ion-label>
+									<ion-select [selectOptions]="taxExemptAttributes" [(ngModel)]="item.taxable">
+										<ion-option *ngFor="let option of taxExemptOptions" [value]="option.value">{{ option.key }}</ion-option>
+									</ion-select>
+								</ion-item>
+							</ion-col>
+
+							<ion-col col-12 col-sm-4 class="qty">
+								<!--<ion-input type="number" [ngModel]="item.cart_item.getQty()" (ngModelChange)="item.cart_item.setQty($event)" ></ion-input>-->
+								<ion-input type="number" [value]="item.cart_item.qty" [(ngModel)]="item.cart_item.qty"></ion-input>
+							</ion-col><!--.qty-->
+
+							
+							<ion-col col-12 col-sm-7 offset-sm-1 class="buttons">
+								<ion-buttons>
+									<!-- KEEP FOR LATER
+									<button ion-button (click)="wishlistItem(item.cart_item)">
+										Move to Wishlist
+									</button>
+									-->
+									
+									<button ion-button icon-start color="secondary" (click)="updateItem(item.cart_item)">
+										<ion-icon name="cart"></ion-icon> Update
+									</button>
+
+									<button ion-button icon-start color="danger" (click)="removeItem(item.cart_item)">
+										<ion-icon name="trash"></ion-icon> Remove
+									</button>
+								</ion-buttons>
+							</ion-col>
+						</ion-row>
+					</ion-grid><!--#cart-table-->
+
+					<loading *ngIf="showItemsLoading" message="Loading Cart Items"></loading>
+
+					<div class="backorder message" *ngIf="showBackorderMessage">
+						<p color="danger">There are items in your cart that we do not have enough in stock. If you want to back order these items, you must at least order a minimum of $50.00 of that item.</p>
+					</div>
+
+					<div id="cart-buttons" *ngIf="showLoading == false">
+						<button ion-button small color="primary" float-left icon-start (click)="updateCart()">
+							<ion-icon name="cart"></ion-icon> Update Cart
+						</button>
+
+						<button ion-button small color="danger" float-right icon-start (click)="clearCart()">
+							<ion-icon name="trash"></ion-icon> Clear Cart
+						</button>
+
+						<div style="clear: both;"></div>
+					</div>
+
+					<loading *ngIf="showLoading"></loading>
+				</ion-col>
+			</ion-row><!--#cart-items-->
+
+			<ion-row id="cart-bottom">
+				<ion-col col-12 col-sm-6 id="cart-totals">
+					<ion-card>
+						<ion-card-header>
+							Cart Totals
+						</ion-card-header>
+
+						<ion-card-content>
+							<ion-grid>
+								<ion-row class="totals sub-total">
+									<ion-col col-9 col-sm-12 class="text">Subtotal</ion-col>
+									<ion-col col-3 col-sm-12 class="number">{{ cart.subtotal() | currency }}</ion-col>
+								</ion-row><!--.sub-total-->
+
+								<ion-row class="totals discount" *ngIf="cartTotal != undefined">
+									<ion-col col-9 col-sm-12 class="text">Discount <span text-uppercase>{{ cartTotal.coupon_code }}</span></ion-col>
+									<ion-col col-3 col-sm-12 class="number">{{ cartTotal.base_discount_amount | currency }}</ion-col>
+								</ion-row><!--.discount-->
+							</ion-grid>
+						</ion-card-content>
+					</ion-card>
+				</ion-col><!--#cart-totals-->
+
+				<ion-col col-12 col-sm-6 id="cart-coupon">
+					<ion-card>
+						<ion-card-header>
+							Apply Discount Code
+						</ion-card-header>
+
+						<ion-card-content>
+							<div class="form">
+								<ion-item class="coupon-field">
+									<ion-label stacked>Enter Discount Code</ion-label>
+									<ion-input type="text" [(ngModel)]="coupon" text-uppercase></ion-input>
+								</ion-item><!--.coupon-field-->
+
+								<button ion-button (click)="applyDiscountCode()">Apply Discount</button>
+							</div><!--.form-->
+
+							<div class="current" *ngIf="cartTotal?.coupon_code != undefined">
+								<button ion-button small color="danger" (click)="removeDiscountCode()">Remove {{ cartTotal.coupon_code }}</button>
+							</div><!--.current-->
+						</ion-card-content>
+					</ion-card>
+				</ion-col><!--#cart-coupon-->
+			</ion-row><!--#cart-bottom-->
+
+			<ion-row id="goto-checkout">
+				<button ion-button color="secondary" (click)="gotoPage('CheckoutPage')">Proceed to Checkout</button>
+			</ion-row><!--#goto-checkout-->
+		</ion-grid><!--#cart-->
+	</div>
+
+	<loading *ngIf="cart == undefined"></loading>
+</ion-content>
+
+<ion-footer>
+	<button ion-button block (click)="cartActions()">
+		Cart Actions
+	</button>
+</ion-footer>

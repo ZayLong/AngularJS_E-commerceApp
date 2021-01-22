@@ -1,0 +1,28 @@
+<ion-header>
+	<tis-header (userLogged)="userLogged($event)"></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<ion-card *ngIf="order != undefined">
+		<ion-card-header>
+			Order #{{ order.increment_id }} <ion-icon name="thumbs-up" color="secondary"></ion-icon>
+		</ion-card-header>
+
+		<ion-card-content>
+			<p>Order has successfully been created. Please wait as we process the order. You can keep track of your order, and past orders, in your profile page order section.</p>
+
+			<ion-buttons>
+				<button ion-button block (click)="gotoPage('HomePage')">Continue Shopping</button>
+
+				<button ion-button block color="secondary" (click)="gotoPage('ProfileOrdersPage')">Your Orders</button>
+			</ion-buttons>
+		</ion-card-content>
+	</ion-card>
+</ion-content>

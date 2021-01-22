@@ -1,0 +1,43 @@
+<section id="addtocart" *ngIf="status">
+	<ion-grid>
+		<ion-row class="cartstatus calltoorder" *ngIf="status === 'calltoorder'">
+			<ion-col col-3>
+				<button ion-button icon-only color="secondary" (click)="commonProvider.callNumber('18003626245')">
+					<ion-icon name="call"></ion-icon>
+				</button>
+			</ion-col>
+
+			<ion-col col-9>
+				<p>Please call 800.362.6245 to purchase this product.</p>
+			</ion-col>
+		</ion-row><!--.calltoorder-->
+
+		<ion-row class="cartstatus outofstock" *ngIf="status === 'outofstock'">
+			<!-- Might not do anything -->
+		</ion-row><!--.outofstock-->
+
+		<ion-row class="cartstatus addtocart" *ngIf="status === 'addtocart'">
+			<ion-col col-12 col-sm-6 col-md-12 col-lg-6>
+				<ion-input type="number" [(ngModel)]="quantity" placeholder="Qty" [min]="minQuantity"></ion-input>
+			</ion-col>
+
+			<ion-col col-12 col-sm-6 col-md-12 col-lg-6>
+				<button ion-button block (click)="cartProvider.processAddToCart(cart, product, quantity, logged)">Add To Cart</button>		
+			</ion-col>
+		</ion-row><!--.addtocart-->
+
+		<ion-row class="cartstatus region" *ngIf="status === 'region'">
+			<ion-col col-12>
+				<p><strong>Not available in your region.</strong></p>
+			</ion-col>
+		</ion-row>
+
+		<ion-row class="cartstatus login" *ngIf="status === 'login'">
+			<ion-col col-12>
+				<button ion-button small color="secondary" (click)="gotoPage('LoginPage')">
+					Login to Purchase
+				</button>
+			</ion-col>
+		</ion-row><!--.login-->
+	</ion-grid>
+</section><!--#addtocart-->

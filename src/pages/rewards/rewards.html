@@ -1,0 +1,283 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<ion-segment [(ngModel)]="mode">
+		<ion-segment-button value="info">Info</ion-segment-button>
+		<ion-segment-button value="balance">Balance</ion-segment-button>
+		<ion-segment-button value="coupon">Coupon</ion-segment-button>
+	</ion-segment>
+
+	<div [ngSwitch]="mode" padding-top>
+		<section *ngSwitchCase="'info'" (swiperight)="swipe('balance')" (swipeleft)="swipe('coupon')" id="segment-info">
+
+			<ion-card id="header-card">
+				<img padding src="assets/img/rewards/logo.jpg" width="244" height="119" />
+
+				<ion-card-content>
+					<h2>Earning points is as easy as 1-2-3...</h2>
+					<p>TIS REWARDS is the only loyalty program of its kind that offers both monthly credit towards products and the ability to earn discounted or free shipping. Earning points is simple and the more you earn, the better the monthly reward.
+				</ion-card-content>
+			</ion-card>
+
+			<ion-card id="point-system-card">
+				<ion-card-header>
+					The Point System
+				</ion-card-header>
+
+				<ion-card-content>
+					<ion-grid>
+						<ion-row>
+							<ion-col col-12 col-md-6 id="basic-tier" class="tier">
+								<h3>Basic</h3>
+								<p class="requirement">Just for Enrolling!</p>
+								<p class="shipping">$11.99 shipping<br/><span>(on orders $99 or more*)</span></p>
+							</ion-col>
+
+							<ion-col col-12 col-md-6 id="bronze-tier" class="tier">
+								<h3>Bronze</h3>
+								<p class="requirement">{{ rewardPointMinimum.Bronze }} Points Quarterly</p>
+								<p class="shipping">$10.99 shipping<br/><span>(on orders $99 or more*)</span></p>
+								<p class="coupon">${{ rewardCouponValue.Bronze }} Coupon</p>
+							</ion-col>
+
+							<ion-col col-12 col-md-6 id="silver-tier" class="tier">
+								<h3>Silver</h3>
+								<p class="requirement">{{ rewardPointMinimum.Silver }} Points Quarterly</p>
+								<p class="shipping">$8.99 shipping<br/><span>(on orders $99 or more*)</span></p>
+								<p class="coupon">${{ rewardCouponValue.Silver }} Coupon</p>
+							</ion-col>
+
+							<ion-col col-12 col-md-6 id="gold-tier" class="tier">
+								<h3>Gold</h3>
+								<p class="requirement">{{ rewardPointMinimum.Gold }} Points Quarterly</p>
+								<p class="shipping">$7.99 shipping<br/><span>(on orders $99 or more*)</span></p>
+								<p class="coupon">${{ rewardCouponValue.Gold }} Coupon</p>
+							</ion-col>
+
+							<ion-col col-12 col-md-6 id="platinum-tier" class="tier">
+								<h3>Platinum</h3>
+								<p class="requirement">{{ rewardPointMinimum.Platinum }} Points Quarterly</p>
+								<p class="shipping">$4.99 shipping<br/><span>(on orders $99 or more*)</span></p>
+								<p class="coupon">${{ rewardCouponValue.Platinum }} Coupon</p>
+							</ion-col>
+
+							<ion-col col-12 col-md-6 id="black-tier" class="tier">
+								<h3>Black</h3>
+								<p class="requirement">{{ rewardPointMinimum.Black }} Points Quarterly</p>
+								<p class="shipping">FREE shipping<br/><span>(on orders $99 or more*)</span></p>
+								<p class="coupon">${{ rewardCouponValue.Black }} Coupon</p>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+					<ion-list>
+						
+
+						<ion-item>
+							<p>* $13.99 shipping for orders under $99.</p>
+						</ion-item>
+					</ion-list>
+				</ion-card-content>
+			</ion-card>
+
+			<ion-card id="purchasing-card">
+				<ion-card-header>
+					Points Toward Purchases
+				</ion-card-header>
+
+				<ion-card-content>
+					<ion-list>
+						<ion-item id="one-point" class="reward-points">
+							<h3>One Point</h3>
+							<p>One point for every dollar spent with THE INDUSTRY SOURCE</p>
+						</ion-item><!--#one-point-->
+
+						<ion-item id="double-point" class="reward-points">
+							<h3>Double Points</h3>
+							<p>Double points for every dollar spent with our Signature Brand products</p>
+
+							<ion-grid class="point-brands">
+								<ion-row>
+									<ion-col class="brand" col-6 col-md-3 col-lg-2 *ngFor="let brand of doublePoints">
+										<img alt="{{ brand.name }}" src="assets/img/brands/{{ brand.image }}" (click)="gotoBrand(brand)" />
+									</ion-col>
+								</ion-row>
+							</ion-grid><!--.point-brands-->
+						</ion-item><!--#double-point-->
+
+						<ion-item id="triple-point" class="reward-points">
+							<h3>Triple Points</h3>
+							<p>Triple points for every dollar spent on EMMA and ForPro Professional Collection products</p>
+
+							<ion-grid class="point-brands">
+								<ion-row>
+									<ion-col class="brand" col-6 col-md-3 col-lg-2 *ngFor="let brand of triplePoints">
+										<img alt="{{ brand.name }}" src="assets/img/brands/{{ brand.image }}" (click)="gotoBrand(brand)" />
+									</ion-col>
+								</ion-row>
+							</ion-grid><!--.point-brands-->
+						</ion-item><!--#triple-point-->
+					</ion-list>
+				</ion-card-content>
+			</ion-card><!--#purchasing-card-->
+
+			<ion-card id="activites-card">
+				<ion-card-header>
+					Activities
+				</ion-card-header>
+
+				<ion-card-content>
+					<ion-card-title>Get a quick view of all your Balance Rewards activities.</ion-card-title>
+					<p>Your TIS Balance Rewards Summary helps you keep track of all your membership details, including points, coupons and more.</p>
+
+					<ion-list>
+						<ion-item>
+							<p>1) Check how many points you have</p>
+						</ion-item>
+
+						<ion-item>
+							<p>2) Look for Members Only Offers</p>
+						</ion-item>
+
+						<ion-item>
+							<p>3) Track your Balance Rewards benefits</p>
+						</ion-item>
+					</ion-list>
+				</ion-card-content>
+			</ion-card><!--#activites-->
+
+			<ion-card id="stuff-card">
+				<ion-card-header>
+					Loyalty Program
+				</ion-card-header>
+
+				<ion-card-content>
+					<p>TIS REWARDS is the only loyalty program of its kind that offers both monthly credit towards products and the ability to earn discounted or free shipping.*</p>
+
+					<ion-list>
+						<ion-item>
+							<p>• Active members will level up or down every quarter based on previous quarters points (Jan 1, Apr 1, July 1, Oct 1). Qualifying purchases are limited to items in thebeautybook and on theindustrysource.com. Points are based on orders shipped. Excludes purchases on Exclusive products including, but not limited to, Living Proof, Loma, Moroccanoil, Neuma, Pure Brazilian, and TRI.</p>
+						</ion-item>
+
+						<ion-item>
+							<p>• Coupon will be sent via email to valid address of TIS Member and must be redeemed within the month issued and received and can be used on any order excluding drop ships and special orders. Coupon must be redeemed by calling 800.362.6245, in store, or online at theindustrysource.com. Coupon must be applied at the time the order is placed. TIS Rewards member must be in good standing. Coupon is non-transferable.</p>
+						</ion-item>
+
+						<ion-item>
+							<p>• Must be signed up to receive TIS emails. By unsubscribing to our emails, your enrollment in this program will no longer be valid.</p>
+						</ion-item>
+
+						<ion-item>
+							<p>• Current members can check point balances here by clicking the Balance tab if currently logged in.</p>
+						</ion-item>
+
+						<ion-item>
+							<p>* Discounted or free shipping does not apply to residential address fees, insurance fees, drop ships, furniture & equipment, hazardous materials and special orders. Contiguous U.S. states only. A freight surcharge may be added at any time to defray rising gasoline and shipping fees. Orders under $99 at any level will be charged the flat rate of $13.99 ground shipping.</p>
+						</ion-item>
+					</ion-list>
+				</ion-card-content>
+			</ion-card><!--#stuff-->
+
+			<img class="select-image" src="assets/img/rewards/banner-select.jpg" width="1170" height="480" (click)="imageModal('assets/img/rewards/banner-select.jpg', 'TIS Select')" />
+		</section><!--#segment-info-->
+
+		<section *ngSwitchCase="'balance'" (swiperight)="swipe('coupon')" (swipeleft)="swipe('info')" id="segment-user">
+			<div *ngIf="loadedLogged">
+				<div *ngIf="logged">
+					<ion-card>
+						<img src="{{ banner() }}" width="2200" height="829" />
+						<ion-card-content>
+							<ion-list>
+								<ion-item>
+									<p><strong>Account #</strong></p>
+									<p>{{ cart.customer.get_custom_attribute('aectoken').value }}</p>
+								</ion-item>
+
+								<ion-item>
+									<p><strong>Quarter ends on</strong></p>
+									<p>{{ endOfQuarter() }}</p>
+								</ion-item>
+
+								<ion-item>
+									<p><strong>Quarter Balance</strong></p>
+									<p>{{ cart.customer.rewardPoints() | number:'1.0-2' }}</p>
+								</ion-item>
+
+								<ion-item>
+									<p><strong>Points to next level</strong></p>
+									<p *ngIf="cart.customer.rewardLevel() !== 'Black'">{{ cart.customer.nextRewardLevelBalance() | number:'1.0-2' }}</p>
+									<p *ngIf="cart.customer.rewardLevel() === 'Black'">Maxed!</p>
+								</ion-item>
+							</ion-list>
+						</ion-card-content>
+					</ion-card>
+
+					<progress-bar *ngIf="cart.customer.rewardLevel() !== 'Black' && cart.customer.nextRewardLevelPercentage() > 0" progress="{{ cart.customer.nextRewardLevelPercentage() | number:'1.0-2' }}" subTitle="{{ (cart.customer.nextRewardLevelPercentage() | number:'1.0-2') + '%' }}"></progress-bar>
+				</div><!--logged-->
+
+				<div *ngIf="logged == false">
+					<button ion-button block color="secondary" (click)="gotoPage('LoginPage')">Please Login</button>
+				</div><!--not logged-->
+			</div><!--loadedLogged-->
+			
+
+			<div *ngIf="loadedLogged == false">
+				<loading></loading>
+			</div>
+		</section><!--#segment-user-->
+
+		<section *ngSwitchCase="'coupon'" (swiperight)="swipe('info')" (swipeleft)="swipe('balance')" id="segment-coupon">
+			<div *ngIf="loadedLogged">
+				<div *ngIf="logged">
+					<img src="{{ banner() }}" width="2200" height="829" />
+
+					<ion-card>
+						<ion-card-header>Coupons</ion-card-header>
+
+						<ion-card-content>
+							<p text-center *ngIf="checkedLoadingButton">
+								<button ion-button (click)="checkCoupons()">Check Available Coupons</button>
+							</p>
+
+							<loading *ngIf="checkedLoading" message="Finding Coupons" style="height: 10vh;"></loading>
+
+							<div *ngIf="checkedLoadingButton == false && checkedLoading == false">
+								<p *ngIf="checkedRewardCoupon == false && checkedWeMissYouCoupon == false">Sorry, you do not have any available coupons at this time.</p>
+
+								<div *ngIf="checkedRewardCoupon">
+									<p>Coupon code <strong>{{ cart.customer.rewardLevel() | uppercase }}</strong> is available.</p>
+
+									<p padding-top>Get <strong>{{ cart.customer.rewardCouponValue() | currency }}</strong> off your next order if you enter the coupon code in the cart or checkout!</p>
+								</div>
+
+								<div *ngIf="checkedWeMissYouCoupon">
+									<p>Coupon code <strong>WEMISSYOU</strong> is available.</p>
+
+									<p padding-top>Get $10.00 off your next order over $35.00 if you enter the coupon code in the cart or checkout. We Miss You!</p>
+								</div>
+
+								<p *ngIf="checkedRewardCoupon && checkedWeMissYouCoupon">You can only apply one coupon code per order.</p>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</div>
+
+				<div *ngIf="logged == false">
+					<button ion-button block color="secondary" (click)="gotoPage('LoginPage')">Please Login</button>
+				</div><!--not logged-->
+			</div>
+
+			<div *ngIf="loadedLogged == false">
+				<loading></loading>
+			</div>
+		</section><!--#segment-coupon-->
+	</div><!--mode-->
+</ion-content>

@@ -1,0 +1,36 @@
+product-review-average-star {
+	display: block;
+	height: 12px;
+
+	margin-bottom: 12px;
+
+	.left{
+		width: 50%;
+
+		.icons{
+			font-size: 12px;
+			text-align: right;
+		}
+	}
+
+	.right{
+		width: 50%;
+
+		.bar-wrapper{
+			margin: 0 0 3px 5%;
+
+			border: 1px solid #c4c4c4;
+			border-radius: 4px;
+
+			.bar{
+				height: 12px;
+				background-color: color($colors, secondary);
+				border-radius: 4px;
+			}
+		}
+	}
+
+	.clear{
+		clear: both;
+	}
+}

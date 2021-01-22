@@ -1,0 +1,43 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+
+	<ion-card>
+		<ion-card-header>
+			<h1 text-center>Blocked!</h1>
+		</ion-card-header>
+
+		<ion-card-content>
+			<p>You account has been placed on a Block, there are many reasons behind us placing you on a Block, such as New Customer verification.</p>
+
+			<p padding-top>Please contact our Call Center to discuss what steps are needed to un-block your account.</p>
+
+			<ion-list padding-top>
+				<button ion-item class="call" (click)="commonProvider.callNumber('18003626245')">
+					<ion-icon name="call" item-start color="secondary"></ion-icon>
+					1-800-362-6245
+				</button>
+
+				<ion-item *ngIf="customerId != undefined">
+					<p>Customer #: {{ customerId }}</p>
+				</ion-item>
+
+				<ion-item *ngIf="customerId == undefined && retrievedCustomerId == false">
+					<p>Retrieving your customer number</p>
+				</ion-item>
+
+				<ion-item *ngIf="customerId == undefined && retrievedCustomerId == true">
+					<p class="unable-retrieve">Unable to retrieve your customer number. Did you try to login?</p>
+				</ion-item>
+			</ion-list>
+		</ion-card-content>
+	</ion-card>
+</ion-content>

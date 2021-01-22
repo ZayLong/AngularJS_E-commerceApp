@@ -1,0 +1,29 @@
+home-item {
+	.product{
+		background-color: #fff;
+		
+		.click-area{
+			position: relative;
+			cursor: pointer;
+			text-align: center;
+
+			.tag{
+				position: absolute;
+				top: 4px;
+				right: 0;
+				z-index: 1000;
+			}
+		}
+
+		.product-buttons{
+			ion-col{
+				text-align: center;
+			}
+
+			button{
+				border-color: #282828;
+				color: #282828;
+			}
+		}
+	}
+}

@@ -1,0 +1,38 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="classes.length > 0">
+		<ion-list no-lines>
+			<div *ngFor="let item of classes">
+				<div *ngIf="item.type === 'header'">
+					<ion-list-header>
+						{{ item.value }}
+					</ion-list-header>
+				</div>
+
+				<div *ngIf="item.type === 'class'">
+					<ion-item (click)="classModal(item.value)">
+						<ion-avatar item-start>
+							<img [src]="item.value.product.imageThumbnailPath()">
+						</ion-avatar>
+
+						<h2 class="name">{{ item.value.name }}</h2>
+						<p class="start">Start: {{ item.value.startDateTime.toLocaleString() }}</p>
+						<p class="end">End: {{ item.value.endDateTime.toLocaleString() }}</p>
+					</ion-item>
+				</div>
+			</div>
+		</ion-list>
+	</div>
+
+	<loading *ngIf="classes.length <= 0" message="Loading Classes..."></loading>
+</ion-content>

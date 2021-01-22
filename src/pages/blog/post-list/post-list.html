@@ -1,0 +1,18 @@
+<ion-card>
+	<ion-card-header>{{ post.title }}</ion-card-header>
+
+	<img *ngIf="post.featured_image != false" [alt]="post.title" [src]="post.featured_image" />
+
+	<ion-item>
+		<p class="posted" float-left><strong>Posted: </strong>{{ post.getPublishTime().toDateString() }}</p>
+		<p class="categories" float-right><strong>Categories: </strong>{{ categoryNames }}</p>
+	</ion-item>
+
+	<ion-card-content>
+		<div class="shortcontent" [innerHTML]="post.short_filtered_content"></div>
+
+		<div class="buttons">
+			<button ion-button small color="secondary" (click)="gotoBlogPost(post)">Read More</button>
+		</div><!--.buttons-->
+	</ion-card-content>
+</ion-card>

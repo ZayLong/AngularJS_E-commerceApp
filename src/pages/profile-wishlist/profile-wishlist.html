@@ -1,0 +1,66 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="wishlist != undefined">
+		<div *ngIf="wishlist.items.length <= 0" id="no-items-wishlist">
+			<h1>No items in your wishlist.</h1>
+		</div><!--#no-items-wishlist-->
+
+		<div *ngIf="wishlist.items.length > 0" id="wishlist">
+			<ion-grid id="wishlist-table">
+				<ion-row *ngFor="let item of wishlist.items; let i = index">
+					<ion-col col-2 class="image" (click)="imageModal(item)">
+						<img [src]="item.product.imageThumbnailPath()" />
+					</ion-col><!--.image-->
+
+					<ion-col col-10 class="text" (click)="gotoProduct(item)">
+						<h3 class="name">{{ item.product.name }}</h3>
+						<p class="sku">SKU: {{ item.product.sku }}</p>
+
+						<p class="price">{{ item.subtotal() | currency }} <span class="subtotal" *ngIf="item.qty > 1">({{ item.product.price | currency }} ea.)</span></p>
+					</ion-col>
+
+					<ion-col col-12 col-sm-4 class="qty">
+						<ion-input type="number" [value]="item.qty" [(ngModel)]="item.qty"></ion-input>
+					</ion-col><!--.qty-->
+
+					<ion-col col-12 col-sm-7 offset-sm-1 class="buttons">
+						<ion-buttons>
+							<button ion-button icon-only color="secondary" class="add" (click)="transferItemToCart(item)">
+								<ion-icon name="cart"></ion-icon>
+								<ion-icon name="ios-arrow-forward"></ion-icon>
+							</button>
+
+							<button ion-button icon-only color="danger" (click)="removeItem(item)" class="remove">
+								<ion-icon name="trash"></ion-icon>
+							</button>
+						</ion-buttons>
+					</ion-col><!--.buttons-->
+				</ion-row>
+				<ion-row class="buttons">
+					<ion-col col-12>
+					</ion-col>
+				</ion-row>
+			</ion-grid><!--#wishlist-table-->
+
+			<ion-buttons>
+				<button ion-button small (click)="updateWishlist()">Update Wishlist</button>
+			</ion-buttons>
+		</div><!--#wishlist-->
+	</div>
+
+	<loading *ngIf="wishlist == undefined"></loading>
+</ion-content>
+
+<ion-footer padding>
+	<profile-menu></profile-menu>
+</ion-footer>

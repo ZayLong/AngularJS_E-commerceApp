@@ -1,0 +1,62 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="logged">
+		<header id="profile-header">
+			<h1 class="header">Order by SKU</h1>
+		</header><!--#profile-header-->
+
+		<ion-grid id="dashboard">
+			<ion-row>
+				<ion-col col-12>
+					<form [formGroup]="skuForm" (ngSubmit)="attemptQuickOrder(skuForm)">
+						<div formArrayName="quick">
+							<section [formGroupName]="i" *ngFor="let field of skuForm.controls.quick.controls; let i = index">
+								<ion-item-group>
+									<ion-item>
+										<ion-label floating>SKU</ion-label>
+										
+										<ion-input type="text" formControlName="sku"></ion-input>
+									</ion-item>
+
+									<ion-item>
+										<ion-label floating>QTY</ion-label>
+										
+										<ion-input type="number" formControlName="qty"></ion-input>
+									</ion-item>
+
+									<span float-right ion-button icon-left clear *ngIf="skuForm.controls.quick.length > 1" (click)="removeField(i)">
+										<ion-icon name="close"></ion-icon>
+										Remove
+									</span>
+								</ion-item-group>
+							</section>
+						</div><!--quick-->
+
+						<span ion-button icon-right color="secondary" (click)="addField()">
+							Add SKU Field
+							<ion-icon name="add-circle"></ion-icon>
+	         			</span>
+
+	         			<button ion-button block margin-top [disabled]="!skuForm.valid">
+	         				Submit
+	         			</button>
+					</form><!--skuForm-->
+				</ion-col>
+			</ion-row>
+		</ion-grid><!--#dashboard-->
+	</div>
+</ion-content>
+
+<ion-footer padding>
+	<profile-menu></profile-menu>
+</ion-footer>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "914713542637",
+    "firebase_url": "https://tis-redesign.firebaseio.com",
+    "project_id": "tis-redesign",
+    "storage_bucket": "tis-redesign.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914713542637:android:29f21841ac7e1cf3",
+        "android_client_info": {
+          "package_name": "com.tngworldwide.theindustrysource"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914713542637-5gjgnhpi2fcavf4agtr7t1qecpt177df.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRWLG_TqLULqsywftw5qZgDd3dXxcGSR8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

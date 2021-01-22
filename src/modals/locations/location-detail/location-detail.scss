@@ -1,0 +1,29 @@
+modal-location-detail {
+	#basic{
+		.address{ padding-bottom: 9px; }
+	}
+
+	#map-container{
+		width: 100%;
+		height: 250px;
+
+		#mapper{
+			height: 99%;
+		}
+	}
+
+	#hours, #features{
+		margin-top: 9px;
+		padding-bottom: 9px;
+
+		ion-item{
+			min-height: 1rem;
+			margin-bottom: 0;
+			
+			font-size: 12px;
+			line-height: 1.5em; 
+		}
+
+		ion-label{ margin: 0; }
+	}
+}

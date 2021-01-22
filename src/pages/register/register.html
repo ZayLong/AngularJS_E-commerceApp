@@ -1,0 +1,240 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div id="register-wrapper">
+
+		<progress-bar progress="{{ progress }}" subTitle="{{ currentSlideName }}"></progress-bar>
+
+		<ion-slides (ionSlideDidChange)="slideChanged()" #formSlider zoom="false" autoHeight="true">
+			<ion-slide>
+				<form [formGroup]="infoForm">
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> First Name</ion-label>
+						<ion-input type="text" formControlName="firstName"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="infoForm.controls.firstName.invalid && (infoForm.controls.firstName.dirty || infoForm.controls.firstName.touched)" no-lines class="errors">
+						<p *ngIf="infoForm.controls.firstName.errors.required">First name is required.</p>
+						<p *ngIf="infoForm.controls.firstName.errors.pattern">Not a valid first name.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Last Name</ion-label>
+						<ion-input type="text" formControlName="lastName"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="infoForm.controls.lastName.invalid && (infoForm.controls.lastName.dirty || infoForm.controls.lastName.touched)" no-lines class="errors">
+						<p *ngIf="infoForm.controls.lastName.errors.required">Last name is required.</p>
+						<p *ngIf="infoForm.controls.lastName.errors.pattern">Not a valid last name.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked>Company</ion-label>
+						<ion-input type="text" formControlName="company"></ion-input>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Phone</ion-label>
+						<ion-input type="tel" formControlName="phone" (keydown.Tab)="$event.preventDefault()"></ion-input>
+						<!--Prevents going to the next input from keyboard tabbing which goes to the next slide but still technically on the first slide.-->
+					</ion-item>
+
+					<ion-item *ngIf="infoForm.controls.phone.invalid && (infoForm.controls.phone.dirty || infoForm.controls.phone.touched)" no-lines class="errors">
+						<p *ngIf="infoForm.controls.phone.errors.required">Phone number is required.</p>
+					</ion-item>
+				</form>
+			</ion-slide>
+
+			<ion-slide>
+				<form [formGroup]="accountForm">
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Email</ion-label>
+						<ion-input type="email" formControlName="email"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="accountForm.controls.email.invalid && (accountForm.controls.email.dirty || accountForm.controls.email.touched)" no-lines class="errors">
+						<p *ngIf="accountForm.controls.email.errors.required">Email is required.</p>
+						<p *ngIf="accountForm.controls.email.errors.pattern">Not a valid email address.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Password</ion-label>
+						<ion-input type="password" formControlName="password"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="accountForm.controls.password.invalid && (accountForm.controls.password.dirty || accountForm.controls.password.touched)" no-lines class="errors">
+						<p *ngIf="accountForm.controls.password.errors.required">Password is required.</p>
+						<p *ngIf="accountForm.controls.password.errors.minLength">Password must be eight or more characters.</p>
+						<div *ngIf="accountForm.controls.password.errors.strengthCheck">
+							<p>Need at least three of the following: </p>
+							<p class="small">Lower case, upper case, digits, and special characters.</p>
+						</div>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Confirm</ion-label>
+						<ion-input type="password" formControlName="confirm" (keydown.Tab)="$event.preventDefault()"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="accountForm.controls.confirm.invalid && (accountForm.controls.confirm.dirty || accountForm.controls.confirm.touched)" no-lines class="errors">
+						<p *ngIf="accountForm.controls.confirm.errors.required">Confirm password is required.</p>
+						<p *ngIf="accountForm.controls.confirm.errors.minLength">Confirm password must be eight or more characters.</p>
+						<p *ngIf="accountForm.controls.confirm.errors.equalConfirm">Confirm does not match with password.</p>
+					</ion-item>
+				</form>
+			</ion-slide>
+
+			<ion-slide>
+				<form [formGroup]="addressForm">
+					<ion-item>
+						<p>U.S. Residents Only</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Street</ion-label>
+						<ion-input type="text" formControlName="street"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="addressForm.controls.street.invalid && (addressForm.controls.street.dirty || addressForm.controls.street.touched)" no-lines class="errors">
+						<p *ngIf="addressForm.controls.street.errors.required">Street address is required.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked>Suite</ion-label>
+						<ion-input type="text" formControlName="suite"></ion-input>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> City</ion-label>
+						<ion-input type="text" formControlName="city"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="addressForm.controls.city.invalid && (addressForm.controls.city.dirty || addressForm.controls.city.touched)" no-lines class="errors">
+						<p *ngIf="addressForm.controls.city.errors.required">City is required.</p>
+					</ion-item>
+
+					<ion-item *ngIf="stateOptions == undefined">
+						<ion-label stacked><span class="required">*</span> State</ion-label>
+						<ion-input type="text" formControlName="region"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="stateOptions != undefined">
+						<ion-label stacked><span class="required">*</span> State</ion-label>
+						<ion-select formControlName="region">
+							<ion-option *ngFor="let option of stateOptions" value="{{ option.id }}">{{ option.name }}</ion-option>
+						</ion-select>
+					</ion-item>
+
+					<ion-item *ngIf="addressForm.controls.region.invalid && (addressForm.controls.region.dirty || addressForm.controls.region.touched)" no-lines class="errors">
+						<p *ngIf="addressForm.controls.region.errors.required">State is required.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Zip Code</ion-label>
+						<ion-input type="text" formControlName="postal" (keydown.Tab)="$event.preventDefault()"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="addressForm.controls.postal.invalid && (addressForm.controls.postal.dirty || addressForm.controls.postal.touched)" no-lines class="errors">
+						<p *ngIf="addressForm.controls.postal.errors.required">Zip code is required.</p>
+						<p *ngIf="addressForm.controls.postal.errors.required && addressForm.controls.postal.value != ''">Not a valid zip code.</p>
+					</ion-item>
+				</form>
+			</ion-slide>
+
+			<ion-slide>
+				<form [formGroup]="licenseForm">
+					<!--Let it show a text field first prior to completely loading the options-->
+					<ion-item *ngIf="licenseTypeOptions == undefined">
+						<ion-label stacked><span class="required">*</span> License Type</ion-label>
+						<ion-input type="text" formControlName="licenseType"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="licenseTypeOptions != undefined">
+						<ion-label stacked><span class="required">*</span> License Type</ion-label>
+						<ion-select formControlName="licenseType">
+							<ion-option *ngFor="let option of licenseTypeOptions.options" value="{{ option.value }}">{{ option.label }}</ion-option>
+						</ion-select>
+					</ion-item>
+
+					<ion-item *ngIf="licenseForm.controls.licenseType.invalid && (licenseForm.controls.licenseType.dirty || licenseForm.controls.licenseType.touched)" no-lines class="errors">
+						<p *ngIf="licenseForm.controls.licenseType.errors.required">License type is required</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> License Number</ion-label>
+						<ion-input type="text" formControlName="licenseNumber"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="licenseForm.controls.licenseNumber.invalid && (licenseForm.controls.licenseNumber.dirty || licenseForm.controls.licenseNumber.touched)" no-lines class="errors">
+						<p *ngIf="licenseForm.controls.licenseNumber.errors.required">License number is required</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked>Business Name</ion-label>
+						<ion-input type="text" formControlName="businessName"></ion-input>
+					</ion-item>
+
+					<!--Let it show a text field first prior to completely loading the options-->
+					<ion-item *ngIf="licenseStateOptions == undefined">
+						<ion-label stacked><span class="required">*</span> License State</ion-label>
+						<ion-input type="text" formControlName="licenseState"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="licenseStateOptions != undefined">
+						<ion-label stacked><span class="required">*</span> License State</ion-label>
+						<ion-select formControlName="licenseState" (keydown.Tab)="$event.preventDefault()">
+							<ion-option *ngFor="let option of licenseStateOptions.options" value="{{ option.value }}">{{ option.label }}</ion-option>
+						</ion-select>
+					</ion-item>
+
+					<ion-item *ngIf="licenseForm.controls.licenseState.invalid && (licenseForm.controls.licenseState.dirty || licenseForm.controls.licenseState.touched)" no-lines class="errors">
+						<p *ngIf="licenseForm.controls.licenseState.errors.required">License state is required</p>
+					</ion-item>
+				</form>
+			</ion-slide>
+		</ion-slides><!--#formSlider-->
+	</div><!--#register-wrapper-->
+</ion-content>
+
+<ion-footer padding>
+	<ion-buttons>
+		<div *ngIf="formSlider.isBeginning()">
+			<button ion-button icon-right color="secondary" (click)="nextSlide()">
+				Next
+				<ion-icon name="arrow-dropright"></ion-icon>
+			</button>
+		</div>
+
+		<div *ngIf="!formSlider.isBeginning() && !formSlider.isEnd()">
+			<button ion-button icon-left color="secondary" (click)="prevSlide()">
+				<ion-icon name="arrow-dropleft"></ion-icon>
+				Previous
+			</button>
+
+			<button ion-button icon-right color="secondary" (click)="nextSlide()">
+				Next
+				<ion-icon name="arrow-dropright"></ion-icon>
+			</button>
+		</div>
+
+		<div *ngIf="formSlider.isEnd()">
+			<button ion-button icon-left color="secondary" (click)="prevSlide()">
+				<ion-icon name="arrow-dropleft"></ion-icon>
+				Previous
+			</button>
+
+			<button ion-button color="secondary" (click)="registerAttempt()">
+				Create Account
+			</button>
+		</div>
+	</ion-buttons>
+</ion-footer>

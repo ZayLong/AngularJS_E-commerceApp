@@ -1,0 +1,81 @@
+page-rewards {
+	img{
+		max-width: 100%;
+		height: auto;
+	}
+
+	#point-system-card{
+		.tier{
+			h3{
+				padding: 2px 4px;
+				background-color: #333;
+				color: #efefef;
+				font-weight: 500;
+			}
+
+			p{
+				font-size: 1.2rem;
+			}
+		}
+	}
+
+	#purchasing-card{
+		.reward-points{
+			ion-label{
+				white-space: normal;
+			}
+
+			.point-brands{
+				margin-top: 9px;
+
+				ion-row{
+					justify-content: center;
+				}
+			}
+
+			.brand{
+				text-align: center;
+
+				img{ 
+					max-width: 75%;
+					height: auto;
+					margin: 0 auto;
+				}
+			}
+		}
+	}
+	
+	#stuff-card{
+		ion-label{
+			white-space: normal;
+		}
+	}
+}
+
+// MD to XL
+@media (min-width: 768px){
+	page-rewards{
+		#point-system-card{
+			.tier{
+				p{
+					font-size: 1.4rem;
+				}
+			}
+		}
+	}
+}
+
+// LG to XL
+@media (min-width: 992px){
+	page-rewards{
+		#purchasing-card{
+			.reward-points{
+				.point-brands{
+					ion-row{
+						justify-content: flex-start;
+					}
+				}
+			}
+		}
+	}
+}

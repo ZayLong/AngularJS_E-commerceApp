@@ -1,0 +1,17 @@
+<section id="price" *ngIf="status">
+	<div class="price customer-onsale" *ngIf="status === 'customer-onsale'">
+		<p>{{ product.storePrice().price | currency }} <span class="sale">{{ product.price | currency }}</span></p>
+	</div><!--.customer-onsale-->
+
+	<div class="price customer-notsale" *ngIf="status === 'customer-notsale'">
+		<p>{{ product.price | currency }}</p>
+	</div><!--.customer-notsale-->
+
+	<div class="price guest-onsale" *ngIf="status === 'guest-onsale'">
+		<p>{{ product.storePrice().price | currency }} <span class="sale">{{ product.price | currency }}</span></p>
+	</div><!--.guest-onsale-->
+
+	<div class="price guest-notsale" *ngIf="status === 'guest-notsale'">
+		<p>{{ product.price | currency }}</p>
+	</div><!--.guest-notsale-->
+</section><!--#price-->

@@ -1,0 +1,33 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding class="pane">
+	<section id="reset-container">
+		<form id="reset-form" [formGroup]="resetForm" (ngSubmit)="resetAttempt()">
+			<ion-item>
+				<ion-label stacked><span class="required">*</span> New Password</ion-label>
+				<ion-input type="password" formControlName="password"></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label stacked><span class="required">*</span> Confirm Password</ion-label>
+				<ion-input type="password" formControlName="confirm"></ion-input>
+			</ion-item>
+
+			<button ion-button type="submit" [disabled]="!resetForm.valid">Send Reset</button>
+		</form><!--#reset-form-->
+
+		<div class="login-actions">
+			<button ion-button block icon-left (click)="openPage('RegisterPage')">
+				<ion-icon name="contact"></ion-icon>
+				Register 
+			</button>
+			
+			<button ion-button block icon-left (click)="openPage('LoginPage')">
+				<ion-icon name="search"></ion-icon>
+				Login
+			</button>
+		</div><!--.login-actions-->
+	</section><!--#reset-container-->
+</ion-content>

@@ -1,0 +1,138 @@
+// This needs to be outside of the page-cart selector
+.alert-backorder{
+	.alert-message{
+		ul{
+			padding-left: 16px;
+		}
+	}
+}
+
+page-cart {
+	#cart-items{
+		// Similiar styles to Wishlist
+		#cart-table{
+			ion-row{
+				padding: 5px 1px;
+				border-bottom: 1px solid #333;
+			}
+
+			.image{
+				img{
+					border-radius: 24px;
+				}
+			}
+
+			.text{
+				.name{
+					margin: 0;
+					font-size: 16px;
+				}
+
+				.sku, .price{
+					margin: 0;
+					font-size: 14px;
+					line-height: 1.5em;
+				}
+			}
+
+			.qty{
+				ion-input{
+					margin-top: 3px;
+					border: 1px solid #646464;
+					border-radius: 12px;
+
+					input{
+						margin: 5px 5px;
+					}
+				}
+			}
+
+			.buttons{
+				text-align: left;
+				button{
+					height: 3.0rem;
+					font-size: 1.1rem;
+				}
+			}
+		}
+
+		.backorder{
+			color: color($colors, danger);
+		}
+
+		.backorder.message{
+			padding: 0 16px;
+			text-align: center;
+		}
+	}
+	
+
+	#no-items-cart{
+		padding-top: 36px;
+		text-align: center;
+	}
+
+	#cart-coupon{
+		.coupon-field{
+			padding-left: 0;
+		}
+	}
+
+	#cart-totals{
+		.totals{
+			.text{ 
+				color: color($colors, secondary);
+				
+				font-weight: 700; 
+			}
+			.number{ text-align: right; }
+		}
+	}
+
+	#goto-checkout{
+		button{
+			margin: 0 auto;
+		}
+	}
+	
+	ion-footer{
+		padding: 0px 10px;
+	}
+}
+
+@media (min-width: 576px){
+	page-cart{
+		#cart-table{
+			.text{
+				.name{
+					font-size: 18px;
+				}
+
+				.sku, .price{
+					font-size: 16px;
+				}
+			}
+
+			ion-input{
+				input{
+					margin: 5px 5px;
+					font-size: 16px;
+				}
+			}
+
+			.buttons{
+				text-align: left;
+				button{
+					height: 3.0rem;
+					font-size: 1.2rem;
+				}
+			}
+		}
+
+		#cart-totals{
+			.totals{
+				.number{ text-align: left; }	
+			}
+		}
+	}
+}

@@ -1,0 +1,67 @@
+page-profile-wishlist {
+	// Similiar styles to Cart
+	#wishlist-table{
+		ion-row{
+			padding: 5px 1px;
+			border-bottom: 1px solid #333;
+		}
+
+		.image{
+			img{
+				border-radius: 24px;
+			}
+		}
+
+		.text{
+			.name{
+				margin: 0;
+				font-size: 1.5rem;
+			}
+
+			.sku, .price{
+				margin: 0;
+				font-size: 1.4rem;
+				line-height: 1.5em;
+			}
+		}
+
+		.qty{
+			ion-input{
+				margin-top: 3px;
+				border: 1px solid #646464;
+				border-radius: 12px;
+
+				input{
+					margin: 5px 5px;
+				}
+			}
+		}
+
+		.buttons{
+			text-align: left;
+			
+			button{
+				height: 3.0rem;
+				font-size: 1.1rem;
+			}
+
+			.add{
+				.button-inner{
+					padding: 0 0.75em;
+				}
+
+				ion-icon.icon{
+					padding: 0;
+
+					&[name="cart"]{ padding-right: 0.125em; }
+					&[name="ios-arrow-forward"]{ padding-left: 0.125em; }
+				}
+			}
+		}
+	}
+
+	#no-items-wishlist{
+		padding-top: 36px;
+		text-align: center;
+	}
+}

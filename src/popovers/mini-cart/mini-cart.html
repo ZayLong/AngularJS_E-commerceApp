@@ -1,0 +1,49 @@
+<ion-content>
+	<ion-buttons padding>
+		<button ion-button small color="secondary" (click)="gotoPage('CartPage')">Cart</button>
+		<button ion-button small color="secondary" *ngIf="logged" (click)="gotoPage('CheckoutPage')">Checkout</button>
+		<button ion-button small color="secondary" *ngIf="logged == false" (click)="gotoPage('LoginPage')">Login</button>
+		<button ion-button icon-only small (click)="helpAlert()">
+			<ion-icon name="help" ></ion-icon>
+		</button>
+	</ion-buttons>
+
+	<ion-list>
+		<ion-item>
+			<h3>Subtotal: {{ subtotal | currency }}</h3>
+			<h3>QTY: {{ qty }}</h3>
+		</ion-item>
+
+		<ion-item-sliding *ngFor="let item of items" class="item">
+			<ion-item (click)="gotoProduct(item)">
+				<h2>{{ (item.cart_item.name | slice:0:25) }} <span *ngIf="item.cart_item.name.length >= 25">...</span></h2>
+				<h3>SKU: {{ item.cart_item.sku }}</h3>
+				<h3><ion-icon name="alert" color="danger" *ngIf="item.stock_item.qty == 0"></ion-icon> {{ item.cart_item.subtotal() | currency }} <span *ngIf="item.cart_item.qty > 1">( {{ item.cart_item.price | currency }} ea. )</span></h3>
+			</ion-item>
+
+			<ion-item-options side="left">
+				<button ion-button color="danger" (click)="removeItem(item)">
+					<ion-icon name="trash"></ion-icon>
+					Remove
+				</button>
+			</ion-item-options>
+
+			<ion-item-options side="right">
+				<button ion-button (click)="subQty(item)">
+					<ion-icon name="remove"></ion-icon>
+					Sub
+				</button>
+
+				<button ion-button (click)="addQty(item)">
+					<ion-icon name="add"></ion-icon>
+					Add
+				</button>
+
+				<button ion-button color="secondary" (click)="updateItem(item)">
+					<ion-icon name="cart"></ion-icon>
+					{{ item.cart_item.qty }}
+				</button>
+			</ion-item-options>
+		</ion-item-sliding>
+	</ion-list>
+</ion-content>

@@ -1,0 +1,40 @@
+product-review {
+	#review-overview{
+		.stars-average, .button-average{
+			width: 50%;
+		}
+
+		.button-average{
+			text-align: center;
+
+			.average{
+				margin: 0;
+				font-size: 32px;
+				font-weight: 700;
+			}
+
+			.total-review-count{
+				margin: 0;
+				padding: 4px 0;
+				font-size: 10px;
+			}
+		}	
+	}
+	
+	#review-listing{
+		margin-top: 18px;
+
+		ion-card{
+			width: 100%;
+
+			.verified-buyer{
+				margin-bottom: 9px;
+			}
+
+			.helpful{
+				padding: 0 16px 4px;
+				vertical-align: middle;
+			}
+		}
+	}
+}

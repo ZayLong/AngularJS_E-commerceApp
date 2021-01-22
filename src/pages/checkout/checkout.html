@@ -1,0 +1,239 @@
+<ion-header no-border>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="logged == true && hasItems == true">
+		<header id="profile-header" padding>
+			<h1 class="header">Checkout</h1>
+		</header><!--#profile-header-->
+
+		<ion-grid>
+			<ion-row>
+				<ion-col col-12 col-sm-6 col-md-5 col-lg-4>
+					<ion-card id="payment-method-card" class="card">
+						<ion-card-header>
+							Payment Methods
+						</ion-card-header>
+
+						<ion-card-content>
+							<div *ngIf="selectedPaymentMethod != undefined">
+								<!-- Paymetric -->
+								<div *ngIf="selectedPaymentMethod.code == 'tng_paymetric'">
+									<div *ngIf="statusPaymetricCard == null">
+										<p>Loading Card Data</p>
+									</div>
+
+									<div *ngIf="statusPaymetricCard != null">
+										<div *ngIf="statusPaymetricCard == 'existing'">
+											<p *ngIf="selectedPaymetricCard.card_type != 'AE'">Card No: #### #### #### {{ selectedPaymetricCard.lastFour() }}</p>
+
+											<p *ngIf="selectedPaymetricCard.card_type == 'AE'">Card No: #### ###### #{{ selectedPaymetricCard.lastFour() }}</p>
+
+											<p>Brand: {{ selectedPaymetricCard.fullCardType() }}</p>
+											<p>Exp: {{ selectedPaymetricCard.cardExpiration().month }} / {{ selectedPaymetricCard.cardExpiration().year }}</p>
+
+											<p *ngIf="paymetricInfo.get_additional_data().get_extOrderId()">PO No: {{ paymetricInfo.get_additional_data().get_extOrderId() }}</p>
+										</div>
+
+										<div *ngIf="statusPaymetricCard == 'new'">
+											<div *ngIf="paymetricInfo.get_additional_data().get_cc_type() != 'AE'">
+												<p>Card No: #### #### #### {{ paymetricInfo.get_additional_data().lastFour() }}</p>
+											</div>
+
+											<div *ngIf="paymetricInfo.get_additional_data().get_cc_type() == 'AE'">
+												<p>Card No: #### ###### #{{ paymetricInfo.get_additional_data().lastFour() }}</p>
+											</div>
+											
+											<p>Brand: {{ paymetricInfo.get_additional_data().fullTypeName() }}</p>
+											<p>Exp: {{ paymetricInfo.get_additional_data().get_cc_exp_month() }} / {{ paymetricInfo.get_additional_data().get_cc_exp_year() }}</p>
+
+											<br />
+
+											<p *ngIf="paymetricInfo.get_additional_data().get_extOrderId()">PO No: {{ paymetricInfo.get_additional_data().get_extOrderId() }}</p>
+
+											<p *ngIf="paymetricInfo.get_additional_data().get_savePayment()">Saving card for later</p>
+										</div>
+
+										<div *ngIf="statusPaymetricCard == 'none'">
+											<p>Please select a payment method.</p>
+										</div>
+									</div>
+								</div>
+
+								<!-- Paypal -->
+
+								<!-- Purchase Order -->
+								<div *ngIf="selectedPaymentMethod.code == 'purchaseorder'">
+									<p>Invoice Purchase Order</p>
+								</div>
+							</div>
+
+							<button ion-button small class="change" (click)="modalPaymentMethod()" [disabled]="changePaymentInvalid">Select Payment Method</button>
+						</ion-card-content>
+					</ion-card><!--#payment-method-card-->
+
+					<ion-card id="shipping-address-card">
+						<ion-card-header>
+							Shipping Address
+						</ion-card-header>
+
+						<ion-card-content>
+							<div class="address">
+								<address *ngIf="shippingAddress != undefined">
+									<p>{{ shippingAddress.fullName() }}</p>
+									<p>{{ shippingAddress.company }}</p>
+									<p>{{ shippingAddress.fullStreetAddress() }}</p>
+									<p>{{ shippingAddress.fullMetroAddress() }}</p>
+									<p>{{ shippingAddress.country_id }}</p>
+									<p>{{ shippingAddress.telephone }}</p>
+								</address>
+
+								<address *ngIf="shippingAddress == undefined">
+									<p>xxxxx xxxxx</p>
+									<p>xxxxxxxxxxxxx</p>
+									<p>xxx xxxxxxx xxx</p>
+									<p>xxxxxx, xx, xxxxx</p>
+									<p>xxx</p>
+									<p>xxx-xxx-xxxx</p>
+								</address>
+							</div><!--.address-->
+
+							<button ion-button small class="change" (click)="modalShippingAddress()" [disabled]="changeShippingInvalid">Change Address</button>
+						</ion-card-content>
+					</ion-card><!--#shipping-address-card-->
+
+					<ion-card id="billing-address-card" class="card">
+						<ion-card-header>
+							Billing Address
+						</ion-card-header>
+
+						<ion-card-content>
+							<div class="address">
+								<address *ngIf="billingAddress != undefined">
+									<p>{{ billingAddress.fullName() }}</p>
+									<p>{{ billingAddress.company }}</p>
+									<p>{{ billingAddress.fullStreetAddress() }}</p>
+									<p>{{ billingAddress.fullMetroAddress() }}</p>
+									<p>{{ billingAddress.country_id }}</p>
+									<p>{{ billingAddress.telephone }}</p>
+								</address>
+
+								<address *ngIf="billingAddress == undefined">
+									<p>xxxxx xxxxx</p>
+									<p>xxxxxxxxxxxxx</p>
+									<p>xxx xxxxxxx xxx</p>
+									<p>xxxxxx, xx, xxxxx</p>
+									<p>xxx</p>
+									<p>xxx-xxx-xxxx</p>
+								</address>
+							</div><!--.address-->
+						</ion-card-content>
+					</ion-card><!--#billing-address-card-->
+				</ion-col>
+
+				<ion-col col-12 col-sm-6 col-md-7 col-lg-8>
+					<ion-card id="comments-card" class="card">
+						<ion-card-header>
+							Comments
+						</ion-card-header>
+
+						<ion-card-content>
+							<ion-textarea [(ngModel)]="comment">
+							</ion-textarea>
+						</ion-card-content>
+					</ion-card><!--#comments-card-->
+
+					<ion-card id="cart-card" class="card">
+						<ion-card-header>
+							Cart
+						</ion-card-header>
+
+						<ion-list *ngIf="cart.items.length > 0">
+							<ion-item no-lines *ngFor="let item of items">
+								<ion-avatar item-start>
+									<img [src]="item.product_item?.imageThumbnailPath()" />
+								</ion-avatar>
+
+								<h3>{{ item.product_item.name }}</h3>
+								<p>{{ item.product_item.sku }}</p>
+								<p>{{ item.cart_item.subtotal() | currency }} <span class="subtotal" *ngIf="item.cart_item.qty > 1">({{ item.product_item.price | currency }} ea.)</span> <span class="backordered" *ngIf="item.product_item.isBackOrdered(item.stock_item)">Backordered</span></p>
+								
+							</ion-item>
+						</ion-list>
+
+						<ion-card-content>
+							<p *ngIf="cart.items.length <= 0">Loading cart items</p>
+
+							<button ion-button small class="change" (click)="gotoPage('CartPage')">Edit Cart</button>
+						</ion-card-content>
+					</ion-card><!--#cart-card-->
+
+					<ion-card id="totals-card" class="card">
+						<ion-card-header>
+							Totals
+						</ion-card-header>
+
+						<ion-card-content>
+							<ion-grid *ngIf="cartTotal != undefined">
+								<ion-row *ngIf="cartTotal.get_total_segment('subtotal') != undefined">
+									<ion-col col-8>Subtotal</ion-col>
+									<ion-col col-4 text-right>{{ cartTotal.get_total_segment('subtotal').value | currency }}</ion-col>
+								</ion-row>
+
+								<ion-row *ngIf="cartTotal.get_total_segment('shipping') != undefined">
+									<ion-col col-8>Shipping</ion-col>
+									<ion-col col-4 text-right>{{ cartTotal.get_total_segment('shipping').value | currency }}</ion-col>
+								</ion-row>
+
+								<ion-row *ngIf="cartTotal.get_total_segment('app_additional_fee') != undefined">
+									<ion-col col-8>Fees</ion-col>
+									<ion-col col-4 text-right>{{ cartTotal.get_total_segment('app_additional_fee').value | currency }}</ion-col>
+								</ion-row>
+
+								<ion-row *ngIf="cartTotal.get_total_segment('tax') != undefined">
+									<ion-col col-8>Tax</ion-col>
+									<ion-col col-4 text-right>{{ cartTotal.get_total_segment('tax').value | currency }}</ion-col>
+								</ion-row>
+
+								<ion-row class="totals discount" *ngIf="cartTotal.base_discount_amount != 0">
+									<ion-col col-8 class="text">Discount <span text-uppercase>{{ cartTotal.coupon_code }}</span></ion-col>
+									<ion-col col-4 text-right class="number">{{ cartTotal.base_discount_amount | currency }}</ion-col>
+								</ion-row>
+
+								<ion-row *ngIf="cartTotal.get_total_segment('grand_total') != undefined">
+									<ion-col col-8>Total</ion-col>
+									<ion-col col-4 text-right>{{ cartTotal.get_total_segment('grand_total').value | currency }}</ion-col>
+								</ion-row>
+							</ion-grid>
+
+							<p *ngIf="cartTotal == undefined" padding-top padding-bottom>Calculating...</p>
+						</ion-card-content>
+					</ion-card><!--#totals-card-->
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+
+	<div *ngIf="logged == true && hasItems == false">
+		<div id="no-items-cart">
+			<h2>Empty Cart</h2>
+
+			<button ion-button color="secondary" (click)="gotoPage('HomePage')">Go Back</button>
+		</div><!--#no-items-cart-->
+	</div>
+
+	<loading *ngIf="logged == false"></loading>
+</ion-content>
+
+<ion-footer padding>
+	<!-- Might want to disable this button till everything is processed -->
+	<button ion-button block [disabled]="processOrderInvalid" (click)="processOrder()">Process Order</button>
+</ion-footer>

@@ -1,0 +1,175 @@
+<ion-header padding>
+	<ion-title>
+		Change Payment Method
+	</ion-title>
+</ion-header>
+
+
+<ion-content padding>
+	<ion-item id="payment-segment-dropdown">
+		<ion-select [(ngModel)]="segment" [selectOptions]="optionMethods">
+			<ion-option *ngFor="let method of methods" value="{{ method.code }}">
+				{{ method.title }}
+			</ion-option>
+		</ion-select>
+	</ion-item>
+
+	<div [ngSwitch]="segment">
+		<ion-card id="paymetric-card" *ngSwitchCase="'tng_paymetric'">
+			<ion-card-header *ngIf="newCard == true">
+				Create New Card
+			</ion-card-header>
+
+			<ion-card-header *ngIf="newCard != true">
+				Pick Existing Card
+			</ion-card-header>
+
+			<ion-card-content>
+				<form [formGroup]="ccForm" *ngIf="newCard == true">
+					<ion-item *ngIf="newCard == true && cards.length > 0">
+						<button ion-button small (click)="toggleNewCard()">Pick Existing Card</button>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Card Number</ion-label>
+						<ion-input type="tel" formControlName="cardNumber"></ion-input>
+					</ion-item>
+					<ion-item *ngIf="ccForm.controls.cardNumber.invalid && (ccForm.controls.cardNumber.dirty || ccForm.controls.cardNumber.touched)" no-lines class="errors">
+						<p *ngIf="ccForm.controls.cardNumber.errors.required">Card number is required.</p>
+						<p *ngIf="ccForm.controls.cardNumber.errors.error == 'CREDIT_CARD_INVALID'">Invalid card number</p>
+					</ion-item>
+
+					<!--
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Card Expiration (##/####)</ion-label>
+						<ion-input type="text" formControlName="cardExp"></ion-input>
+					</ion-item>
+					-->
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Type</ion-label>
+						<ion-select formControlName="cardType" [selectOptions]="optionTypes">
+							<ion-option *ngFor="let type of cardTypes" [value]="type.value">
+								{{ type.key }}
+							</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item *ngIf="ccForm.controls.cardType.invalid && (ccForm.controls.cardType.dirty || ccForm.controls.cardType.touched)" no-lines class="errors">
+						<p *ngIf="ccForm.controls.cardType.errors.required">Card type is required.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Month Expire</ion-label>
+						<ion-select formControlName="cardExpMonth" [selectOptions]="optionMonths">
+							<ion-option *ngFor="let month of expMonths" [value]="month.value">
+								{{ month.key }}
+							</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item *ngIf="ccForm.controls.cardExpMonth.invalid && (ccForm.controls.cardExpMonth.dirty || ccForm.controls.cardExpMonth.touched)" no-lines class="errors">
+						<p *ngIf="ccForm.controls.cardExpMonth.errors.required">Expiration month is required.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Year Expire</ion-label>
+						<ion-select formControlName="cardExpYear" [selectOptions]="optionYears">
+							<ion-option *ngFor="let year of expYears" [value]="year.value">
+								{{ year.key }}
+							</ion-option>
+						</ion-select>
+					</ion-item>
+					<ion-item *ngIf="ccForm.controls.cardExpYear.invalid && (ccForm.controls.cardExpYear.dirty || ccForm.controls.cardExpYear.touched)" no-lines class="errors">
+						<p *ngIf="ccForm.controls.cardExpYear.errors.required">Expiration year is required.</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Card CVC</ion-label>
+						<ion-input type="tel" formControlName="cardCvv"></ion-input>
+					</ion-item>
+					<ion-item *ngIf="ccForm.controls.cardCvv.invalid && (ccForm.controls.cardCvv.dirty || ccForm.controls.cardCvv.touched)" no-lines class="errors">
+						<p *ngIf="ccForm.controls.cardCvv.errors.required">CVC number is required</p>
+						<p *ngIf="ccForm.controls.cardCvv.errors.error == 'CREDIT_CARD_INVALID'">Invalid CVC</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked>Purchase Order #</ion-label>
+						<ion-input type="text" formControlName="purchaseOrderNumber"></ion-input>
+					</ion-item>
+
+					<ion-item>
+						<ion-label>Save Payment</ion-label>
+						<ion-checkbox formControlName="savePayment" value="true"></ion-checkbox>
+					</ion-item>
+				</form>
+
+				<form [formGroup]="ccExistForm" *ngIf="newCard == false">
+					<ion-item *ngIf="newCard == false">
+						<button ion-button small (click)="toggleNewCard()">Create New Card</button>
+					</ion-item>
+
+					<ion-list radio-group [formControl]="ccExistForm.controls['cardIndex']">
+						<ion-item *ngFor="let card of cards; let i = index">
+							<ion-radio [value]="i"></ion-radio>
+							<ion-label>
+								<p *ngIf="card.card_type != 'AE'">Card No: #### #### #### {{ card.lastFour() }}</p>
+
+								<p *ngIf="card.card_type == 'AE'">Card No: #### ###### #{{ card.lastFour() }}</p>
+
+								<p>Brand: {{ card.fullCardType() }}</p>
+								<p>Exp: {{ card.cardExpiration().month }} / {{ card.cardExpiration().year }}</p>
+							</ion-label>
+						</ion-item>
+					</ion-list>
+
+					<ion-item *ngIf="ccExistForm.controls.cardIndex.invalid && (ccExistForm.controls.cardIndex.dirty || ccExistForm.controls.cardIndex.touched)" no-lines class="errors">
+						<p *ngIf="ccExistForm.controls.cardIndex.errors.required">Please select card</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked><span class="required">*</span> Card CVC</ion-label>
+						<ion-input type="tel" formControlName="cardCvv"></ion-input>
+					</ion-item>
+
+					<ion-item *ngIf="ccExistForm.controls.cardCvv.invalid && (ccExistForm.controls.cardCvv.dirty || ccExistForm.controls.cardCvv.touched)" no-lines class="errors">
+						<p *ngIf="ccExistForm.controls.cardCvv.errors.required">CVC number is required</p>
+						<p *ngIf="ccExistForm.controls.cardCvv.errors.error == 'CREDIT_CARD_INVALID'">Invalid CVC</p>
+					</ion-item>
+
+					<ion-item>
+						<ion-label stacked>Purchase Order #</ion-label>
+						<ion-input type="text" formControlName="purchaseOrderNumber"></ion-input>
+					</ion-item>
+				</form>
+			</ion-card-content>
+		</ion-card>
+
+		<ion-card id="purchaseorder-card" *ngSwitchCase="'purchaseorder'">
+			<ion-card-header>
+				Purchase Order
+			</ion-card-header>
+
+			<ion-card-content>
+				<form [formGroup]="invoiceForm">
+					<ion-item>
+						<ion-label stacked>Purchase Order #</ion-label>
+						<ion-input type="text" formControlName="purchaseOrderNumber"></ion-input>
+					</ion-item>
+				</form>
+			</ion-card-content>
+		</ion-card>
+
+		<ion-card id="paypal-card" *ngSwitchCase="'paypal_express'">
+			<ion-card-header>
+				Paypal
+			</ion-card-header>
+
+			<ion-card-content>
+			</ion-card-content>
+		</ion-card>
+	</div>
+</ion-content>
+
+<ion-footer padding>
+	<button ion-button (click)="dismiss()">Close</button>
+	<button ion-button (click)="save()">Submit</button>
+</ion-footer>

@@ -1,0 +1,56 @@
+page-reset {
+	.pane {
+		background-color: #fff;
+	}
+
+	#reset-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		min-height: 75vh;
+
+		button{
+			border-radius: 20px;
+			color: #fff;
+			font-size: 1.36rem;
+			font-family: 'PT Sans', 'Helvetica Neue', 'Verdana', 'Arial', 'sans-serif';
+			text-transform: uppercase;
+		}
+
+		#reset-form{
+			flex: 1;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: center;
+
+			width: 85vw;
+			padding: 18px 16px 18px 4px;
+			margin-top: 36px;
+			border: ridge 2px #abcabc;
+			border-radius: 8px;
+
+			button{
+				width: 50vw;
+			}
+		}
+
+		.login-actions {
+			flex: 3;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+
+			width: 85vw;
+			margin-top: 36px;
+
+			button{
+				.button-inner {
+					justify-content: flex-start;
+				}	
+			}
+		}
+	}
+}

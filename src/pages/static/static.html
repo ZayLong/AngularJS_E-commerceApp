@@ -1,0 +1,19 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<main id="{{ page.identifier }}" *ngIf="page != undefined" class="wrapper">
+		<div [innerHTML]="page.content">
+		</div>
+	</main><!--.wrapper-->
+
+	<loading *ngIf="page == undefined"></loading>
+</ion-content>

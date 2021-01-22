@@ -1,0 +1,28 @@
+<ion-content padding>
+	<ion-card>
+		<ion-card-header>
+			{{ post.title }}
+		</ion-card-header>
+
+		<img *ngIf="post.featured_image" [src]="post.featured_image" [alt]="post.title" />
+
+		<ion-item>
+			<p class="posted" float-left><strong>Posted: </strong> {{ post.getPublishTime().toDateString() }}</p>
+			<p class="categories" float-right><strong>Categories: </strong>{{ categoryNames }}</p>
+		</ion-item>
+
+		<ion-card-content>
+			<div class="content" [innerHTML]="post.filtered_content"></div><!--.content-->
+
+			<ion-slides pager loop centeredSlides>
+				<ion-slide *ngFor="let image of post.getMediaGallery()">
+					<img [src]="image" />
+				</ion-slide>
+			</ion-slides>
+		</ion-card-content>
+	</ion-card>
+</ion-content>
+
+<ion-footer padding>
+	<button ion-button block (click)="dismiss()">Close</button>
+</ion-footer>

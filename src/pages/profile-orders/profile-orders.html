@@ -1,0 +1,60 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="logged">
+		<header id="profile-header" padding>
+			<h1 class="header">My Orders</h1>
+		</header><!--#profile-header-->
+
+		<ion-grid id="orders-table" *ngIf="loadingOrders == false">
+			<ion-row *ngIf="orders != undefined">
+				<ion-col col-12 col-sm-6 col-md-4 col-lg-3 *ngFor="let order of orders">
+					<ion-card class="item">
+						<ion-card-header>
+							<h3 class="title">{{ order.increment_id }} <ion-icon name="phone-portrait" *ngIf="order.extension_attributes.from_app == true"></ion-icon></h3>
+						</ion-card-header>
+
+						<ion-card-content>
+							<p class="date"><strong>Order Date:</strong> {{ order.created_at | date: 'short' }}</p>
+							<p class="total"><strong>Grand Total:</strong> {{ order.base_grand_total | currency }}</p>
+							<p class="status"><strong>Status:</strong> {{ order.status }}</p>
+
+							<div class="buttons">
+								<button ion-button small (click)="viewOrderModal(order)">View</button>
+								<button ion-button small (click)="reorder(order)">Reorder</button>
+							</div><!--.buttons-->
+						</ion-card-content>
+					</ion-card><!--.item-->
+				</ion-col>
+
+				<ion-col col-12>
+					<paging [currentPage]="currentPage" [itemsPerPage]="noItems" [totalPages]="totalPages" (pageFeed)="orderPage($event)"></paging>
+				</ion-col>
+			</ion-row>
+
+			<ion-row *ngIf="orders.length <= 0">
+				<ion-col col-12>
+					<p>You do not have any previous orders.</p>
+				</ion-col>
+			</ion-row>
+		</ion-grid><!--#orders-table-->
+
+		<loading *ngIf="loadingOrders" message="Retrieving Orders"></loading>
+
+	</div>
+
+	<loading *ngIf="logged == false"></loading>
+</ion-content>
+
+<ion-footer padding>
+	<profile-menu></profile-menu>
+</ion-footer>

@@ -1,0 +1,196 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<ion-fab id="filter" bottom right>
+		<button ion-fab icon-only mini color="secondary" (disabled)="disableFilterModal" (click)="filterModal()">
+			<ion-icon name="funnel"></ion-icon>
+		</button>
+	</ion-fab><!--#filter-->
+
+	<section id="search-by" *ngIf="search.query && flag == 'text'">
+		<p><strong>Results of:</strong> {{ search.query }}</p>
+	</section><!--#search-by-->
+
+	<section id="active-filters">
+
+		<div *ngIf="search.get_category(0)">
+			<ion-chip>
+				Category ( {{ search.get_category(0) }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchCategory0')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.get_category(1)">
+			<ion-chip>
+				Category ( {{ search.get_category(1) }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchCategory1')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.get_category(2)">
+			<ion-chip>
+				Category ( {{ search.get_category(2) }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchCategory2')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.get_category(3)">
+			<ion-chip>
+				Category ( {{ search.get_category(3) }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchCategory3')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.prices && (search.prices.lower != 0 && search.prices.upper != 0)">
+			<ion-chip>
+				Prices ( {{ search.prices.lower | currency }} - {{ search.prices.upper | currency }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchPrice')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.color">
+			<ion-chip>
+				Color ( {{ search.color }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchColor')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.manufacturer">
+			<ion-chip>
+				Manufacturer ( {{ search.manufacturer }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchManufacturer')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.collection">
+			<ion-chip>
+				Collection ( {{ search.collection }} )
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchCollections')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+
+		<div *ngIf="search.tag">
+			<ion-chip>
+				{{ search.tag }}
+
+				<button ion-button clear color="secondary" (click)="clearFilter('searchTags')">
+					<ion-icon name="close-circle"></ion-icon>
+				</button>
+			</ion-chip>
+		</div>
+	</section><!--#active-filters-->
+
+	<section id="display-option">
+		<ion-buttons start>
+			<button ion-button small icon-start color="secondary" (click)="changeDisplay('grid')">
+				<ion-icon name="grid"></ion-icon>
+				Grid View
+			</button>
+
+			<button ion-button small icon-start color="secondary" (click)="changeDisplay('list')">
+				<ion-icon name="list"></ion-icon>
+				List View
+			</button>
+		</ion-buttons>
+	</section><!--#display-option-->
+
+	<section id="sortby">
+		<ion-item>
+			<label class="sortby-label" item-start>Order By</label>
+
+			<ion-select [(ngModel)]="search.order.field" [selectOptions]="sortByAttributes" (ionChange)="switchField($event)">
+				<ion-option *ngFor="let option of sortBy" value="{{ option.value }}">{{ option.key }}</ion-option>
+			</ion-select>
+
+			<button ion-button icon-only item-end color="secondary" *ngIf="search.order.direction == 'DESC'" (click)="switchDirection('ASC')">
+				<ion-icon name="arrow-down"></ion-icon>
+			</button>
+
+			<button ion-button icon-only item-end color="secondary" *ngIf="search.order.direction == 'ASC'" (click)="switchDirection('DESC')">
+				<ion-icon name="arrow-up"></ion-icon>
+			</button>
+		</ion-item>
+	</section><!--#sortby-->
+
+	<section id="products">
+		<div *ngIf="items != undefined">
+			<ion-list *ngIf="display == 'list'">
+				<list-feed-item *ngFor="let item of items" 
+					[item]="item" 
+					[logged]="logged">
+				</list-feed-item>
+			</ion-list>
+
+			<ion-grid *ngIf="display == 'grid'">
+				<ion-row>
+					<ion-col col-6 col-sm-4 col-md-3 col-lg-2 *ngFor="let item of items">
+						<grid-feed-item [item]="item" [logged]="logged"></grid-feed-item>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</div><!--.loaded-->
+
+		<loading *ngIf="showLoadingComponent" (message)="loadingMessage"></loading>
+
+		<div *ngIf="showLoadingComponent == false && items.length <= 0">
+			<p text-center padding-top padding-bottom>No items were found.</p>
+		</div>
+	</section><!--#products-->
+
+	<section id="paging" *ngIf="search.paging.total > 0">
+		<ion-grid>
+			<ion-row>
+				<ion-col col-xs-12 col-sm-6>
+					<ion-item>
+						<ion-label>Number of items:</ion-label>
+						<ion-select [(ngModel)]="search.paging.count" [selectOptions]="pagingCountAttributes" (ionChange)="switchCount($event)">
+							<ion-option *ngFor="let option of pagingCount" value="{{ option.value }}">{{ option.key }}</ion-option>
+						</ion-select>
+					</ion-item>
+				</ion-col>
+
+				<ion-col col-12>
+					<paging 
+						[currentPage]="search.paging.current" 
+						[itemsPerPage]="search.paging.count"
+						[totalPages]="search.paging.total" 
+						(pageFeed)="pageFeed($event)">		
+					</paging>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</section><!--#paging-->
+</ion-content>

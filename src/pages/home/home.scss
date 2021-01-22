@@ -1,0 +1,115 @@
+page-home {
+	.new-top-wrappers{
+		.show-buttons{
+			background-color: #282828;
+
+			&:hover:not(.disable-hover){
+				background-color: #282828;
+			}
+		}
+
+		ion-col{
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: space-between;
+		}
+
+		.products{
+			.row{ justify-content: center; }
+		}
+	}
+
+	#front-deals{
+		.top{
+			justify-content: center;
+			padding-bottom: 20px;
+		}
+
+		.middle{
+			padding: 20px 0;
+			border-top: 1px solid #8c8c8c;
+		}
+
+		.bottom{
+			padding-top: 20px;
+			border-top: 1px solid #8c8c8c;
+			
+			.left{
+				padding-bottom: 10px;
+				border-bottom: 1px solid #8c8c8c;
+			}
+
+			.right{
+				padding-top: 10px;
+			}
+
+			.bottom-element{
+				.text{
+					width: 50%;
+
+					h3{
+						//website fonts: PT Sans, Helvetica Neue, Verdana, Arial, and sans-serif
+						font-size: 20px;
+						font-weight: 500;
+						line-height: 1.35em;
+						text-transform: uppercase;
+					}
+
+					p{
+						//website fonts: PT Sans, Helvetica Neue, Verdana, Arial, and sans-serif
+						font-size: 13px;
+						font-weight: 400;
+						line-height: 1.35em;
+					}
+				}
+
+				.image{
+					width: 50%;
+					text-align: right;
+
+					img{
+						width: auto;
+						max-height: 205px;
+					}
+				}
+			}
+		}
+
+		.front-deal-image{
+			text-align: center;
+
+			img{
+				max-width: 100%;
+				height: auto;
+			}	
+		}
+	}
+
+	#blog{
+		padding-top: 18px;
+		border-top: 1px solid #8c8c8c;
+
+		.header{
+			padding-bottom: 9px;
+		}
+	}
+}
+
+// MD to LG
+@media (min-width:768px){
+	page-front{
+		#front-deals{
+			.bottom{
+				.left{
+					padding: 0 10px 0 0;
+					border-bottom: none;
+					border-right: 1px solid #8c8c8c;
+				}
+
+				.right{
+					padding: 0 0 0 10px;
+				}
+			}
+		}
+	}
+}

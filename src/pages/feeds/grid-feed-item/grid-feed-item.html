@@ -1,0 +1,11 @@
+<div class="click-area" (click)="gotoProduct(item)" (press)="productPopover(item)">
+	<ion-badge class="tag" color="secondary" *ngIf="item.product.tags != undefined">{{ item.product.tags }}</ion-badge>
+
+	<img [src]="item.product.thumbnail_url" />
+	
+	<p class="title" *ngIf="item.product.name.length > 25">{{ item.product.name | slice:0:25 }}...</p>
+
+	<p class="title" *ngIf="item.product.name.length <= 25">{{ item.product.name }}</p>
+
+	<p class="message"><strong>{{ this.messageBadge }}</strong></p>
+</div><!--.click-area-->

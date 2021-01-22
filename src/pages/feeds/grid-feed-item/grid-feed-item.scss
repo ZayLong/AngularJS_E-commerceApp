@@ -1,0 +1,20 @@
+grid-feed-item {
+	background-color: #fff;
+		
+	.click-area{
+		position: relative;
+		cursor: pointer;
+		text-align: center;
+
+		.tag{
+			position: absolute;
+			top: 4px;
+			right: 0;
+			z-index: 1000;
+		}
+
+		.message{
+			text-align: center;
+		}
+	}
+}

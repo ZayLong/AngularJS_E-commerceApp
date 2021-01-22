@@ -1,0 +1,65 @@
+<ion-header padding *ngIf="store != undefined">
+	<ion-navbar>
+		<ion-title>{{ store.name }}</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding *ngIf="store != undefined">
+	<ion-card id="basic">
+		<div id="map-container">
+			<loading *ngIf="loading == true" message="Loading Map"></loading>
+			<div #mapper id="mapper"></div>
+		</div><!--#map-container-->
+
+		<ion-card-content>
+			<div class="address">
+				<p>{{ store.address.street }}</p>
+				<p>{{ store.address.city }}, {{ store.address.region }} {{ store.address.postal }}</p>
+			</div><!--.address-->
+
+			<p class="phone"><strong>Phone:</strong> {{ store.phone }}</p>
+			<p class="fax"><strong>Fax:</strong> {{ store.fax }}</p>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card id="hours">
+		<ion-card-header>
+			Hours
+		</ion-card-header>
+
+		<ion-list>
+			<ion-item *ngFor="let hour of store.hours">
+				<div *ngIf="hour.open != '' && hour.close != ''"><strong float-left>{{ hour.day }}:</strong> <span float-right>{{ hour.open }} to {{ hour.close }}</span></div>
+
+				<div *ngIf="hour.open == '' && hour.close == ''"><strong float-left>{{ hour.day }}:</strong> <span float-right>CLOSED</span></div>
+			</ion-item>
+		</ion-list>
+	</ion-card><!--#hours-->
+
+	<ion-card id="features" *ngIf="store.features.length > 0">
+		<ion-card-header>
+			Features
+		</ion-card-header>
+
+		<ion-list>	
+			<ion-item *ngFor="let feature of store.features">
+				<span>{{ feature }}</span>
+			</ion-item>
+		</ion-list>
+	</ion-card><!--#features-->	
+</ion-content>
+
+<ion-footer padding>
+	<ion-buttons start>
+		<button ion-button icon-start small color="secondary" (click)="commonProvider.callNumber(store.phone)">
+			<ion-icon name="call"></ion-icon>
+			Call
+		</button>
+
+		<button ion-button small color="secondary" (click)="directions(store)">
+			Directions
+		</button>
+
+		<button ion-button small float-right (click)="dismiss()">Close</button>
+	</ion-buttons>
+</ion-footer>

@@ -1,0 +1,58 @@
+<ion-header>
+	<tis-header (userLogged)="userLogged($event)"></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div *ngIf="logged">
+		<ion-grid id="dashboard">
+			<ion-row>
+				<ion-col col-12 padding>
+					<header id="profile-header">
+						<h1 class="header">Edit Account Information</h1>
+						<p class="subheader" *ngIf="cart.customer.get_custom_attribute('aectoken')">Customer #: {{ cart.customer.get_custom_attribute('aectoken').value }}</p>
+					</header><!--#profile-header-->
+				</ion-col>
+			</ion-row>
+
+			<ion-row>
+				<ion-col col-12 col-sm-6>
+					<ion-card id="password-form" class="form">
+						<ion-card-content>
+							<form [formGroup]="passwordForm">
+								<ion-item>
+									<ion-label stacked>Current Password</ion-label>
+									<ion-input type="password" formControlName="current"></ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-label stacked>New Password</ion-label>
+									<ion-input type="password" formControlName="password"></ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-label stacked>Confirm Password</ion-label>
+									<ion-input type="password" formControlName="confirm"></ion-input>
+								</ion-item>
+
+								<button ion-button small (click)="passwordAttempt()">Change Password</button>
+							</form><!--passwordForm-->
+						</ion-card-content>
+					</ion-card><!--#password-form-->
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+
+	<loading *ngIf="logged == undefined"></loading>
+</ion-content>
+
+<ion-footer padding>
+	<profile-menu></profile-menu>
+</ion-footer>

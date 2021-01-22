@@ -1,0 +1,19 @@
+<ion-item>
+	<button ion-button small icon-only (click)="gotoPage(previousPage)">
+		<ion-icon name="arrow-back"></ion-icon>
+	</button>
+
+	<span *ngFor="let other of otherPages">
+		<button ion-button small *ngIf="other != currentPage" (click)="gotoPage(other)">
+			{{ other }}
+		</button>
+
+		<button ion-button small color="secondary" *ngIf="other == currentPage">
+			{{ other }}
+		</button>
+	</span>
+
+	<button ion-button small icon-only (click)="gotoPage(nextPage)">
+		<ion-icon name="arrow-forward"></ion-icon>
+	</button>
+</ion-item>

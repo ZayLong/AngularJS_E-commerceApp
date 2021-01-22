@@ -1,0 +1,30 @@
+{
+	"name": "tisapp",
+	"integrations": {
+		"cordova": {}
+	},
+	"type": "ionic-angular",
+	"proxies": [
+		{
+			"path": "/api",
+			"proxyUrl": "https://stage.theindustrysource.com/index.php/rest/V1"
+		},
+		{
+			"path": "/paypalsandboxapi",
+			"proxyUrl": "https://api.sandbox.paypal.com/v1"
+		},
+		{
+			"path": "/paypalproductionapi",
+			"proxyUrl": "https://api.paypal.com/v1"
+		},
+		{
+			"path": "/tisappapi",
+			"proxyUrl": "http://45.79.213.195/api/v1"
+		},
+		{
+			"path": "/yotpoapi",
+			"proxyUrl": "https://api.yotpo.com"
+		}
+	],
+	"id": "f82ad91b"
+}

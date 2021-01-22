@@ -1,0 +1,19 @@
+<button ion-button icon-only *ngIf="canFacebook" (click)="socialSharing('facebook')">
+	<ion-icon name="logo-facebook"></ion-icon>
+</button>
+
+<button ion-button icon-only *ngIf="canTwitter" (click)="socialSharing('twitter')">
+	<ion-icon name="logo-twitter"></ion-icon>
+</button>
+
+<button ion-button icon-only *ngIf="canGooglePlus" (click)="socialSharing('googlePlus')">
+	<ion-icon name="logo-googleplus"></ion-icon>
+</button>
+
+<button ion-button icon-only *ngIf="canInstagram" (click)="socialSharing('instagram')">
+	<ion-icon name="logo-instagram"></ion-icon>
+</button>
+
+<button ion-button icon-only *ngIf="canPinterest" (click)="socialSharing('pinterest')">
+	<ion-icon name="logo-pinterest"></ion-icon>
+</button>

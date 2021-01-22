@@ -1,0 +1,51 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding class="pane">
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<section id="login-container">
+		<form id="login-form" [formGroup]="loginForm">
+			<ion-item>
+				<ion-label stacked><span class="required">*</span> Email</ion-label>
+				<ion-input type="email" formControlName="email"></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label stacked><span class="required">*</span> Password</ion-label>
+				<ion-input [type]="passwordStatus" formControlName="password"></ion-input>
+				<button ion-button icon-only clear item-right class="hide-show-password" (click)="togglePassword()">
+					<ion-icon [name]="passwordIcon"></ion-icon>
+				</button>
+			</ion-item>
+
+			<button ion-button [disabled]="!loginForm.valid" (click)="loginAttempt()">Login</button>
+		</form><!--#login-form-->
+
+		<section id="fingerprint" *ngIf="showFingerprint == true">
+			<ion-item>
+				<ion-icon name="finger-print" style="font-size: 64px;" (click)="fingerprint()"></ion-icon>
+			</ion-item>
+		</section><!--#fingerprint-->
+
+		<div class="login-actions">
+			<button ion-button block icon-left (click)="gotoPage('RegisterPage')">
+				<ion-icon name="contact"></ion-icon>
+				Register 
+			</button>
+			
+			<!--
+			<button ion-button block icon-left (click)="gotoPage('ForgotPage')">
+				<ion-icon name="search"></ion-icon>
+				Forgot Password
+			</button>
+			-->
+		</div><!--.login-actions-->
+	</section><!--#login-container-->
+</ion-content>

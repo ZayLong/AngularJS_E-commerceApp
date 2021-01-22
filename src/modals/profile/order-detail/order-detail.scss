@@ -1,0 +1,52 @@
+modal-order-detail {
+	ion-header{
+		padding-top: 4px;
+
+		ion-title{
+			ion-icon{
+				padding-left: 9px;
+			}
+		}
+
+		.status{
+			margin-left: 14px;
+			margin-top: 5px;
+
+			ion-badge{
+				padding: 4px;
+				text-transform: capitalize;
+			}
+		}
+	}
+
+	#order-items{
+		.item{
+			.text{
+				p{ margin: 0; }
+
+				.name{
+					font-weight: 700;
+				}
+			}
+
+			.subtotal{
+				p{ margin: 0; }
+				text-align: right;
+			}
+		}
+	}
+
+	#status-history-card{
+		.item{
+			padding-left: 0px;
+
+			.comment{
+				font-weight: 700;
+			}
+
+			.status{
+				text-transform: capitalize;
+			}
+		}
+	}
+}

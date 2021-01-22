@@ -1,0 +1,21 @@
+page-feeds {
+	#active-filters{
+		ion-chip{
+			padding-left: 10px;
+		}
+	}
+
+	#display-option{
+		padding-top: 18px;
+	}
+	
+	#sortby{
+		ion-select{
+			max-width: 95%;
+		}
+
+		button{
+			padding: 0 5px;
+		}
+	}
+}

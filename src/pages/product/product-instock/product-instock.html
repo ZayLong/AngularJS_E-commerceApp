@@ -1,0 +1,13 @@
+<section id="stock" *ngIf="status">
+	<div class="stock-status backordered" *ngIf="status === 'backordered'">
+		<p>Backordered<br/>Minimum $50.00 purchase for this item (Qty of {{ quantity }})</p>
+	</div><!--.backordered-->
+
+	<div class="stock-status outofstock" *ngIf="status === 'outofstock'">
+		<p>Out of Stock</p>
+	</div><!--.outofstock-->
+
+	<div class="stock-status instock" *ngIf="status === 'instock'">
+		<p>In Stock</p>
+	</div><!--.instock-->
+</section><!--#stock-->

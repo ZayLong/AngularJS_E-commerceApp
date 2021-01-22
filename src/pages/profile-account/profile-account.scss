@@ -1,0 +1,16 @@
+page-profile-account {
+
+}
+
+@media (min-width: 576px){
+	page-profile-account {
+		#dashboard{
+			ion-card{
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: flex-start;
+				height: 100%
+			}
+		}
+	}
+}

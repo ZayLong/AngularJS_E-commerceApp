@@ -1,0 +1,34 @@
+<header>
+	<ion-navbar>
+		<button ion-button menuToggle item-start>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+
+		<ion-title><img class="logo" src="assets/img/logo.png" alt="Logo" width="410" height="44" (click)="gotoHome()" /></ion-title>
+
+		<ion-buttons end>
+			<div *ngIf="reloadCart == false">
+				<button ion-button icon-only color="secondary" *ngIf="cart == undefined">
+					<ion-icon name="cart" color="primary"></ion-icon>
+					<ion-badge color="secondary">0</ion-badge>
+				</button>
+
+				<button ion-button icon-only color="secondary" *ngIf="cart != undefined" (click)="minicartPopover()">
+					<ion-icon name="cart" color="primary"></ion-icon>
+					<ion-badge color="secondary">{{ cart.items_qty }}</ion-badge>
+				</button>
+			</div>
+
+			<div *ngIf="reloadCart == true">
+				<ion-spinner name="crescent"></ion-spinner>
+			</div>
+		</ion-buttons>
+	</ion-navbar>
+	
+	<!--Might want to move this inside the navbar-->
+	<ion-list id="search-header" padding>
+		<ion-item>
+			<ion-input type="text" placeholder="Search for products, categories, ..." [(ngModel)]="search" (keyup.enter)="searchQuery()"></ion-input>
+		</ion-item>
+	</ion-list><!--#search-header-->
+</header>

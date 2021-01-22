@@ -1,0 +1,184 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<div id="product" padding>
+		<div *ngIf="product != undefined">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-12 col-md-6 col-lg-4 id="product-header">
+						<!--Show a slider if more than one item in the media gallery-->
+						<section id="image">
+							<ion-badge class="tag" color="secondary" *ngIf="specs.tag != undefined">{{ specs.tag.label }}</ion-badge>
+
+							<ion-slides *ngIf="product.media_gallery_entries.length > 1" pager loop>
+								<ion-slide *ngFor="let item of product.media_gallery_entries">
+									<img [src]="item.imagePath()" />
+								</ion-slide>
+							</ion-slides>
+
+							<!--Only show a single image if only one in media gallery-->
+							<div *ngIf="product.media_gallery_entries.length <= 1">
+								<img *ngIf="product.imagePath()" [src]="product.imagePath()" />
+							</div>
+						</section><!--#image-->
+					</ion-col><!--#product-header-->
+
+					<ion-col col-12 col-md-6 col-lg-8 id="product-content">
+						<h4 id="title">{{ product.name }}</h4>
+
+						<section id="text">
+							<button ion-button small *ngIf="branding != undefined" (click)="gotoManufacturer(branding)">{{ branding.label }}</button>
+
+							<p class="sku">SKU #: {{ product.sku }}</p>
+						</section><!--#text-->
+
+						<product-instock [product]="product"></product-instock>
+
+						<product-price [product]="product" [action]="productAction" [logged]="logged"></product-price>
+						<product-addtocart [product]="product" [action]="productAction" [cart]="cart"></product-addtocart>
+
+						<section id="wish-compare">
+							<button ion-button small *ngIf="logged" (click)="addToWishlist(product)">Wish List</button>
+
+							<button ion-button small color="secondary" *ngIf="logged && addedToWishlist" (click)="gotoPage('ProfileWishlistPage')">Go to Wishlist</button>
+
+							<!--<button ion-button small (click)="addToCompare()">Compare</button>-->
+						</section>
+
+						<!--
+						<section id="pricealert">
+							<div *ngIf="logged == undefined">
+								<ion-item>
+									<ion-label stacked>Sign up for price alert</ion-label>
+									<ion-input type="email" [(ngModel)]="priceDropEmail"></ion-input>
+								</ion-item>
+
+								<button ion-button (click)="priceDropNotifer(priceDropEmail)">Subscribe</button>
+							</div>
+
+							<div *ngIf="logged != undefined">
+								<p>Notify me when the price drops</p>
+								<button ion-button (click)="priceDropNotifer(logged.getCustomer().getEmail())">Subscribe</button>
+							</div>
+						</section>
+						-->
+
+						<section id="description">
+							<h4>Overview</h4>
+							<div class="wysiwyg" [innerHtml]="product.get_custom_attribute('description').value"></div>
+						</section><!--#description-->
+
+						<!-- Return later, like 1.6.0 or whenever in high demand
+						<section id="social" *ngIf="logged">
+							<button ion-button small icon-start (click)="share()">
+								<ion-icon name="share"></ion-icon>
+								Share
+							</button>
+							<product-social [product]="product" [customer]="cart.customer"></product-social>
+						</section>
+						-->
+					</ion-col><!--#product-content-->
+				</ion-row>
+
+				<ion-row>
+					<ion-col col-12 id="product-footer">
+						<section id="tabs">
+							<ion-segment [(ngModel)]="tabSegments" class="buttons">
+								<ion-segment-button *ngIf="product.get_custom_attribute('additional_information') != undefined" value="additional">Additional Information</ion-segment-button>
+								<ion-segment-button *ngIf="product.get_custom_attribute('directions') != undefined" value="directions">Directions</ion-segment-button>
+								<ion-segment-button *ngIf="product.get_custom_attribute('faq') != undefined" value="faq">FAQS</ion-segment-button>
+								<ion-segment-button *ngIf="product.get_custom_attribute('ingredients') != undefined" value="ingredients">Ingredients</ion-segment-button>
+								<ion-segment-button *ngIf="product.get_custom_attribute('videos') != undefined" value="videos">Video</ion-segment-button>
+								<ion-segment-button *ngIf="product.get_custom_attribute('manual_link')" value="manual">Manual</ion-segment-button>
+								<ion-segment-button value="specifications">Specifications</ion-segment-button>
+							</ion-segment><!--.buttons-->
+
+							<div [ngSwitch]="tabSegments">
+								<div *ngSwitchCase="'additional'" id="additional-content" class="content" [innerHtml]="product.get_custom_attribute('additional_information').value">
+								</div><!--#additional-content-->
+
+								<div *ngSwitchCase="'directions'" id="directions-content" class="content" [innerHtml]="product.get_custom_attribute('directions').value">
+								</div><!--#additional-content-->
+
+								<div *ngSwitchCase="'faq'" id="faq-content" class="content" [innerHtml]="product.get_custom_attribute('faq').value">
+								</div><!--#additional-content-->
+
+								<div *ngSwitchCase="'ingredients'" id="ingredients-content" class="content" [innerHtml]="product.get_custom_attribute('ingredients').value">
+								</div><!--#ingredients-content-->
+
+								<div *ngSwitchCase="'videos'" id="videos-content" class="content">
+									<div class="video-container">
+										<iframe [src]="product.get_custom_attribute('videos').value | sanitize" frameborder="0"></iframe>
+									</div><!--.video-container-->
+								</div><!--#videos-content-->
+
+								<div *ngSwitchCase="'manual'" id="manual-content" class="content">
+									<p text-center>Click image to view manual</p>
+
+									<a href="{{ product.get_custom_attribute('manual_link').value }}">
+										<img src="https://www.theindustrysource.com/pub/media/catalog/product{{ product.get_custom_attribute('manual_image').value }}" *ngIf="product.get_custom_attribute('manual_image') != undefined" />
+
+										<span *ngIf="product.get_custom_attribute('manual_image') == undefined">View Manual</span>
+									</a>
+								</div><!--#manual-content-->
+
+								<div *ngSwitchCase="'specifications'" id="specifications-content" class="content">
+
+									<!-- Not sure to keep around.
+									<p *ngIf="specs.polish != undefined">
+										Polish Group 
+										<span float-right>{{ specs.polish.label }}</span>
+										<span float-right *ngIf="polish == undefined">N/A</span>
+									</p>-->
+
+									<p *ngIf="specs.branding != undefined">
+										Manufacturer 
+										<span float-right>{{ specs.branding.label }}</span>
+										<!--<span float-right *ngIf="branding == undefined">N/A</span>-->
+									</p>
+
+									<p *ngIf="specs.collection != undefined">
+										Collection 
+										<span float-right>{{ specs.collection.label }}</span>
+										<!--<span float-right *ngIf="collections == undefined">N/A</span>-->
+									</p>
+									<p *ngIf="specs.color != undefined">
+										Color
+										<span float-right>{{ specs.color.label }}</span>
+									</p>
+
+									<!-- Not sure to keep around
+									<p>
+										Special Price
+										<span *ngIf="product.get_custom_attribute('special_price') != undefined" float-right>{{ product.get_custom_attribute('special_price').value | currency }}</span>
+										<span *ngIf="product.get_custom_attribute('special_price') == undefined" float-right>No</span>
+									</p>
+									-->
+								</div><!--#specifications-content-->
+							</div><!--.content-->
+						</section><!--#tabs-->
+					</ion-col><!--#product-footer-->
+				</ion-row>
+
+				<!--
+				<ion-row>
+					<ion-col col-12 id="product-review">
+						<product-review [product]="product" [customer]="cart.customer"></product-review>
+					</ion-col>
+				</ion-row>
+				-->
+			</ion-grid>
+		</div>
+
+		<loading *ngIf="product == undefined"></loading>
+	</div><!--#product-->
+</ion-content>

@@ -1,0 +1,14 @@
+<div float-left class="left">
+	<div class="icons">
+		<ion-icon name="star" *ngFor="let icon of iconStars"></ion-icon>
+		<span>({{ starCount }})</span>
+	</div><!--.icons-->
+</div><!--.left-->
+
+<div float-right class="right">
+	<div class="bar-wrapper">
+		<div class="bar" [style.width]="percentage + '%'"></div>
+	</div><!--.bar-wrapper-->
+</div><!--.right-->
+
+<!--<div class="clear"></div>-->

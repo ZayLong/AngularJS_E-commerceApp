@@ -1,0 +1,28 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding class="pane">
+	<section id="forgot-container">
+		<form id="forgot-form" [formGroup]="forgotForm" (ngSubmit)="forgotAttempt()">
+			<ion-item>
+				<ion-label stacked><span class="required">*</span> Email</ion-label>
+				<ion-input type="email" formControlName="email"></ion-input>
+			</ion-item>
+
+			<button ion-button type="submit" [disabled]="!forgotForm.valid">Send Reset</button>
+		</form><!--#forgot-form-->
+
+		<div class="login-actions">
+			<button ion-button block icon-left (click)="openPage('RegisterPage')">
+				<ion-icon name="contact"></ion-icon>
+				Register 
+			</button>
+			
+			<button ion-button block icon-left (click)="openPage('LoginPage')">
+				<ion-icon name="search"></ion-icon>
+				Login
+			</button>
+		</div><!--.login-actions-->
+	</section><!--#forgot-container-->
+</ion-content>

@@ -1,0 +1,24 @@
+page-locations {
+	#map-container{
+		width: 100%;
+		height: 100%;
+
+		#map{
+			height: 99%;
+		}
+	}
+
+	#locations{
+		ion-item{
+			h2{
+				font-size: 18px;
+				font-weight: 700;
+			}
+
+			h3{
+				white-space: normal;
+				padding-bottom: 4px;
+			}
+		}
+	}
+}

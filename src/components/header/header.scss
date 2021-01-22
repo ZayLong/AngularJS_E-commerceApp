@@ -1,0 +1,21 @@
+tis-header {
+	ion-title{
+		.logo{
+			max-width: 100%;
+			height: auto;
+			padding-top: 10px;
+		}
+	}
+
+	ion-list.list{
+		margin-bottom: 0;
+	}
+
+	#search-header{
+		padding: 0px 10px 2px;
+	}
+
+	.toolbar-background{
+		background: #fff;
+	}
+}

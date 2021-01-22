@@ -1,0 +1,215 @@
+// http://ionicframework.com/docs/v2/theming/
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+.clear{ clear: both; }
+
+ion-app{
+	font-family: 'PT Sans', 'Helvetica Neue', 'Verdana', 'Arial', 'sans-serif';	
+}
+
+ion-header{
+	background-color: #fff;
+}
+
+ion-item.item-block{
+	margin-bottom: 9px;
+
+	ion-input,
+	ion-textarea{
+		input::placeholder{
+			color: #484848;
+		}
+	}	
+}
+
+ion-card.card{
+	margin-bottom: 18px;
+
+	ion-card-header{
+		padding: 4px 10px;
+		background-color: color($colors, secondary);
+		color: #fff;
+		font-weight: 700;
+	}
+
+	ion-list.list,
+	ion-card-content.card-content{
+		padding-top: 13px;
+		font-size: 1.3rem;
+
+		button.change{
+			margin-top: 9px;
+		}
+	}
+
+	ion-list.list{
+		ion-item{
+			p{
+				font-size: 1.3rem;
+			}
+		}
+	}
+}
+
+ion-footer{
+	background-color: #fff;
+}
+
+ion-nav{
+	ion-content{
+		/*
+		background: #000 url(../assets/img/background.png) no-repeat right bottom;
+		background-size: 100%;
+		*/
+	}
+}
+
+form{
+	.required{
+		color: color($colors, danger);	
+	}
+
+	.errors{
+		min-height: 1rem;
+		margin-bottom: 0;
+		padding: 0px 0 4px 16px;
+
+		.item-inner{
+			border: 0;
+		}
+
+		ion-label{
+			margin: 0;
+		}
+
+		p{
+			color: color($colors, danger);	
+			font-size: 1.2rem;
+			font-style: italic;
+		}
+
+		.small { font-size: 10px; }
+	}
+}
+
+.video-container{
+	position: relative;
+	height: 0;
+	padding-top: 30px;
+	padding-bottom: 56.25%;
+	overflow: hidden;
+
+	iframe, object, embed{
+		position: absolute;
+		top: 0;	left: 0;
+		width: 100%; height: 100%;
+	}
+}
+
+button{
+	&.button-default{
+		&:hover {
+			color: #fff;
+		}	
+	}
+}
+
+.menu-page {
+	.pane {
+		background-color: #333;
+	}
+
+	.menu-buttons{
+		.segment-button{
+			height: 70px;
+			padding-top: 12px;
+			color: #777776;
+			background-color: #262626;
+			border: 1px solid #444;
+			border-width: 0 0 1px 1px;
+
+			&:hover{
+				color: #fff;
+			}
+		}
+
+		.segment-activated{
+			color: #fffffe;
+			background: none;
+			border: none;
+		}
+	}
+
+	.menu-content{
+		.segment{
+			button, a{
+				margin-bottom: 3px;
+				color: #fff;
+				font-family: 'PT Sans', 'Helvetica Neue', 'Verdana', 'Arial', 'sans-serif';
+				font-size: 11px;
+				line-height: 1.35em;
+			}
+
+			ion-icon{
+				$icon-size: 1.6rem;
+				min-height: $icon-size;
+				font-size: $icon-size;
+			}
+		}
+
+		#segment-menu{
+			button{
+				min-height: auto;
+				background-color: #777;
+			}
+
+			ion-icon{
+				color: #282828; //or #333
+			}
+
+			ion-label{
+				margin: 10px 8px 10px 0;
+			}
+		}
+
+		#segment-page,
+		#segment-account{
+			button, a{
+				background: none;
+				border: 1px solid #444;
+			}
+
+			ion-icon{
+				$icon-size: 1.7rem;
+				min-height: $icon-size;
+				font-size: $icon-size;
+			}
+
+			.item-inner{
+				margin-left: 6px;
+			}
+
+			.same-day{
+				margin-bottom: 3px;
+				background: none;
+				border: 1px solid #444;
+				color: #fff;
+				font-family: 'PT Sans', 'Helvetica Neue', 'Verdana', 'Arial', 'sans-serif';
+				font-size: 12px;
+				line-height: 1.35em;
+			}
+		}
+	}
+}

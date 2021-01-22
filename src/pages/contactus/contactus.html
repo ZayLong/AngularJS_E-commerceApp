@@ -1,0 +1,61 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<ion-card id="contacting-card">
+		<ion-card-header>
+			Contact Us
+		</ion-card-header>
+
+		<ion-list>
+			<button ion-item (click)="commonProvider.callNumber('18003626245')">
+				<ion-icon name="call" color="secondary" item-start></ion-icon> 800-362-6245
+			</button>
+
+			<a ion-item button href="sms:2485160885">
+				<ion-icon name="text" color="secondary" item-start></ion-icon> 248-516-0885
+			</a>
+
+			<button ion-item (click)="email()">
+				<ion-icon name="mail" color="secondary" item-start></ion-icon> sales@theindustrysource.com
+			</button>
+
+			<!-- Add a Contact a Rep button when added -->
+		</ion-list>
+
+		<ion-card-content>
+			<section class="times">
+				<p>Monday - Friday</p>
+				<p>8:30am - 6:00pm EST</p>
+			</section><!--.times-->
+		</ion-card-content>
+	</ion-card>
+
+	<ion-card id="map-card">
+		<ion-card-header>
+			Our Location
+		</ion-card-header>
+
+		<div id="map-container">
+			<loading *ngIf="loading == true" message="Loading Map"></loading>
+			<div #map id="map"></div>
+		</div><!--#map-container-->
+		<ion-card-content>
+			<address>
+				<h3 text-uppercase>The Industry Source</h3>
+				<p>29683 W K Smith Dr.</p>
+				<p>New Hudson, MI 48165</p>
+			</address>
+
+			<button ion-button small (click)="directions()">Directions</button>
+		</ion-card-content>
+	</ion-card>
+</ion-content>

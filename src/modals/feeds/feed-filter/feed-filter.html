@@ -1,0 +1,100 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Filter</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-list>
+
+		<ion-item id="category-level-zero" class="category">
+			<ion-label>Category</ion-label>
+
+			<ion-select [(ngModel)]="category[0].value" [selectOptions]="category[0].options" (ionChange)="categoryChange(0)">
+				<ion-option value=""></ion-option>
+
+				<ion-option *ngFor="let level0 of category[0].data" value="{{ level0.name }}">{{ level0.name }} (<span color="secondary">{{ level0.value }}</span>)</ion-option>
+			</ion-select>
+		</ion-item><!--#category-level-zero-->
+
+		<ion-item *ngIf="category[0].value" id="category-level-one" class="category">
+			<ion-label>Category</ion-label>
+
+			<ion-select [(ngModel)]="category[1].value" [selectOptions]="category[1].options" (ionChange)="categoryChange(1)">
+				<ion-option value=""></ion-option>
+
+				<div *ngFor="let level1 of category[1].data" class="option">
+					<ion-option *ngIf="level1.parent == category[0].value" value="{{ level1.name }}">{{ level1.name }} (<span color="secondary">{{ level1.value }}</span>)</ion-option>	
+				</div><!--.option-->
+			</ion-select>
+		</ion-item><!--#category-level-one-->
+
+		<ion-item *ngIf="category[1].value" id="category-level-two" class="category">
+			<ion-label>Category</ion-label>
+
+			<ion-select [(ngModel)]="category[2].value" [selectOptions]="category[2].options" (ionChange)="categoryChange(2)">
+				<ion-option value=""></ion-option>
+
+				<div *ngFor="let level2 of category[2].data" class="option">
+					<ion-option *ngIf="level2.parent == category[1].value" value="{{ level2.name }}">{{ level2.name }} (<span color="secondary">{{ level2.value }}</span>)</ion-option>
+				</div><!--.option-->
+			</ion-select>
+		</ion-item><!--#category-level-two-->
+
+		<ion-item *ngIf="category[2].value" id="category-level-three" class="category">
+			<ion-label>Category</ion-label>
+			
+			<ion-select [(ngModel)]="category[3].value" [selectOptions]="category[3].options" (ionChange)="categoryChange(3)">
+				<ion-option value=""></ion-option>
+
+				<div *ngFor="let level3 of category[3].data" class="option">
+					<ion-option *ngIf="level3.parent == category[2].value" value="{{ level3.name }}">{{ level3.name }} (<span color="secondary">{{ level3.value }}</span>)</ion-option>
+				</div><!--.option-->
+			</ion-select>
+		</ion-item><!--#category-level-three-->
+
+		<ion-item *ngIf="price.data != undefined">
+			<ion-label stacking>Price <span *ngIf="price">({{ price.value.lower | currency }}, {{ price.value.upper | currency }})</span></ion-label>
+			<ion-range [(ngModel)]="price.value" min="{{ price.data.min }}" max="{{ price.data.max }}" dualKnobs="true" pin="true" color="secondary">
+				<ion-label range-left>{{ price.data.min | currency }}</ion-label>
+				<ion-label range-right>{{ price.data.max | currency }}</ion-label>
+			</ion-range>
+		</ion-item>
+
+		<ion-item>
+			<ion-label>Manufacturer</ion-label>
+			<ion-select [(ngModel)]="manufacturer.value" [selectOptions]="manufacturer.options">
+				<ion-option *ngFor="let manufacturer of manufacturer.data" value="{{ manufacturer.name }}">{{ manufacturer.name }} (<span color="secondary">{{ manufacturer.value }}</span>)</ion-option>
+			</ion-select>
+		</ion-item>
+
+		<ion-item>
+			<ion-label>Color</ion-label>
+			<ion-select [(ngModel)]="color.value" [selectOptions]="color.options">
+				<ion-option *ngFor="let color of color.data" value="{{ color.name }}">{{ color.name }} (<span color="secondary">{{ color.value }}</span>)</ion-option>
+			</ion-select>
+		</ion-item>
+
+		<ion-item>
+			<ion-label>Collection</ion-label>
+			<ion-select [(ngModel)]="collection.value" [selectOptions]="collection.options">
+				<ion-option *ngFor="let collection of collection.data" value="{{ collection.name }}">{{ collection.name }} (<span color="secondary">{{ collection.value }}</span>)</ion-option>
+			</ion-select>
+		</ion-item>
+		
+		<ion-item>
+			<ion-label>Tags</ion-label>
+			<ion-select [(ngModel)]="tag.value" [selectOptions]="tag.options">
+				<ion-option *ngFor="let tag of tag.data" value="{{ tag.name }}">{{ tag.name }} (<span color="secondary">{{ tag.value }}</span>)</ion-option>
+			</ion-select>
+		</ion-item>
+		
+	</ion-list>
+</ion-content>
+
+<ion-footer padding>
+	<ion-buttons>
+		<button ion-button color="secondary" (click)="submit()">Submit</button>
+		<button ion-button (click)="dismiss()">Close</button>
+	</ion-buttons>
+</ion-footer>

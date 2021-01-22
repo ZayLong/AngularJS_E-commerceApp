@@ -1,0 +1,36 @@
+page-checkout {
+	#no-items-cart{
+		padding-top: 36px;
+		text-align: center;
+	}
+	
+	#shipping-address-card,
+	#billing-address-card{
+		address{
+			padding-top: 9px;
+			
+			p{
+				font-size: 1.3rem;
+				font-style: normal;
+			}
+		}
+	}
+
+	#payment-method-card{
+		.payment-method{
+			padding-top: 9px;
+		}
+	}
+
+	#comments-card{
+		ion-textarea{
+			border: 1px solid #c4c4c4;
+		}
+	}
+
+	#cart-card{
+		.backordered{
+			color: color($colors, danger);
+		}
+	}
+}

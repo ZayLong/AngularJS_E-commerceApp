@@ -1,0 +1,210 @@
+<ion-menu class="menu-page" id="tisapp" persistent="true" [content]="content">
+	<ion-header>
+	</ion-header>
+
+	<ion-content class="pane">
+		<div class="menu-buttons">
+			<ion-segment [(ngModel)]="menuSegment">
+				<ion-segment-button value="menu">Menu</ion-segment-button>
+				<ion-segment-button value="account">Account</ion-segment-button>
+				<ion-segment-button value="page">TIS</ion-segment-button>
+			</ion-segment>
+		</div><!--.menu-buttons-->
+
+		<div class="menu-content" [ngSwitch]="menuSegment">
+			<div class="segment" id="segment-menu" *ngSwitchCase="'menu'">
+				<ion-list no-lines inset class="actions">
+					<button ion-item menuClose detail-none (click)="gotoCategory(1590)">New Arrivals</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(1591)">Spa</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(1592)">Mani</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(1593)">Pedi</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(1595)">Hair</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(1597)">Deals</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(2125)">Gifts</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(1781)">Wow!</button>
+					<button ion-item menuClose detail-none (click)="gotoCategory(1600)">Exclusives</button>
+
+					<button ion-item menuClose detail-none (click)="gotoPage('ClassesPage')">The Academy</button>
+
+					<!--<button ion-item menuClose detail-none (click)="gotoPage(BrandsPage)">Brands</button>-->
+
+					<button ion-item menuClose detail-none (click)="gotoPage('ProfileQuickPage')">Quick Order</button>
+				</ion-list>
+			</div><!--menu-->
+
+			<div class="segment" id="segment-account" *ngSwitchCase="'account'">
+				<ion-list no-lines inset class="actions">
+					<ion-item class="same-day">Orders placed before 3PM EST<br/>ship same day!</ion-item>
+					
+					<div *ngIf="logged == true">
+						<button ion-item menuClose detail-none icon-start (click)="gotoPage('ProfileDashboardPage')">
+							<ion-icon name="person"></ion-icon> My Account
+						</button>
+
+						<button ion-item menuClose detail-none icon-start (click)="signOut()">
+							<ion-icon name="person"></ion-icon> Sign Out
+						</button>
+
+						<!--
+						<button ion-item menuClose detail-none icon-start (click)="gotoPage('ProfileComparePage')">
+							<ion-icon name="analytics"></ion-icon> Compare
+						</button>
+						-->
+
+						<button ion-item menuClose detail-none icon-start (click)="gotoPage('ProfileWishlistPage')">
+							<ion-icon name="heart-outline"></ion-icon> Wishlist {{ wishlistCount }} Items
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoPage('RewardsPage')">
+							Rewards Balance: {{ rewardPoints }}
+						</button>
+					</div>
+
+					<div *ngIf="logged != true">
+						<button ion-item menuClose detail-none icon-start (click)="gotoPage('LoginPage')">
+							<ion-icon name="person"></ion-icon> Sign In
+						</button>
+
+						<button ion-item menuClose detail-none icon-start (click)="gotoPage('RegisterPage')">
+							<ion-icon name="person-add"></ion-icon> Create Account
+						</button>
+					</div>
+
+					<button ion-item menuClose detail-none icon-start (click)="commonProvider.callNumber('18003626245')">
+						<ion-icon name="call"></ion-icon> 800-362-6245
+					</button>
+
+					<a ion-item button menuClose detail-none icon-start href="sms:2485160885">
+						<ion-icon name="text"></ion-icon> 248-516-0885
+					</a>
+
+				</ion-list>
+			</div><!--account-->
+
+			<div class="segment" id="segment-page" *ngSwitchCase="'page'">
+				<ion-list no-lines inset class="actions">
+					<ion-list-header>Our Company</ion-list-header>
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoPage('SandboxPage')">
+							Sandbox
+						</button>
+						-->
+					
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(188)">
+							About Us
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoPage('ClassesPage')">
+							Education
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoPage('RewardsPage')">
+							Rewards
+						</button>
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(187)">
+							App Usage
+						</button>
+						-->
+
+						<button ion-item menuClose detail-none (click)="gotoPage('AppusagePage')">
+							App Usage
+						</button>
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(206)">
+							Supplier Requests
+						</button>
+						-->
+
+					<ion-list-header margin-top>Assistance</ion-list-header>
+					
+						<button ion-item menuClose detail-none (click)="gotoPage('ContactusPage')">
+							Contact Us
+						</button>
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(209)">
+							Customer Survey
+						</button>
+						-->
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(205)">
+							Have an Idea?
+						</button>
+						-->
+
+					<ion-list-header margin-top>Customer Service</ion-list-header>
+					
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(186)">
+							Ordering & Policy Information
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(185)">
+							Shipping & Services
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(184)">
+							Security & Privacy Policies
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(183)">
+							Terms of Use
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(182)">
+							Copyright Policies
+						</button>
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(204)">
+							Catalog Unsubscribe
+						</button>
+						-->
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(8)">
+							Customer Reviews
+						</button>
+						-->
+					
+					<ion-list-header margin-top>Other Ways to Shop</ion-list-header>
+					
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(210)">
+							Request a BEAUTY BOOK
+						</button>
+						-->
+
+						<button ion-item menuClose detail-none (click)="gotoPage('BeautybookPage')">
+							View the BEAUTY BOOK
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoPage('LocationsPage')">
+							Store & Distributions
+						</button>
+
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(180)">
+							Wholesale
+						</button>
+
+						<!--
+						<button ion-item menuClose detail-none (click)="gotoStaticPage(11)">
+							Account Representative Lookup
+						</button>
+						-->
+
+						<button ion-item menuClose detail-none (click)="gotoPage('ProfileQuickPage')">
+							Quick Order
+						</button>
+				</ion-list>
+			</div><!--page-->
+		</div><!--.menu-content-->
+	</ion-content>
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

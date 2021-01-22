@@ -1,0 +1,22 @@
+loading {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+
+	width: 90vw;
+	height: 50vh;
+	margin: 0 auto;
+
+	text-align: center;
+
+	ion-spinner{
+		$squareSize: 75px;
+		width: $squareSize;
+		height: $squareSize;
+	}
+
+	.loading-message{
+		font-size: 10px;
+	}
+}

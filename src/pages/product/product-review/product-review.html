@@ -1,0 +1,108 @@
+<div *ngIf="loading == false">
+	<section id="review-overview">
+		<div class="stars-average" float-left>
+			<product-review-average-star *ngFor="let star of theStars; index as i" 
+				[starNumber]="i + 1" 
+				[starCount]="reviews.response.bottomline.star_distribution[star]" 
+				[totalCount]="reviews.response.pagination.total">		
+			</product-review-average-star>
+		</div><!--.stars-average-->
+
+		<div class="button-average" float-right>
+			<p class="average">{{ reviews.response.bottomline.average_score | number:'1.1-1' }}</p>
+
+			<div class="average-stars">
+				<span *ngFor="let star of averageStarsReview">
+					<ion-icon name="star-outline" *ngIf="star == 0"></ion-icon>
+					<ion-icon name="star" *ngIf="star == 1"></ion-icon>
+					<ion-icon name="star-half" *ngIf="star == 2"></ion-icon>
+				</span>
+			</div><!--.average-stars-->
+
+			<p class="total-review-count">{{ reviews.response.pagination.total }} Reviews</p>
+
+			<button ion-button small color="secondary" (click)="revealReviews()">View Reviews</button>
+		</div><!--.button-average-->
+
+		<div class="clear"></div>
+	</section><!--#review-overview-->
+
+	<section id="review-listing" *ngIf="showReviews">
+		<div id="review-listing-header">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-10>
+						<ion-item>
+							<ion-label>Sort By</ion-label>
+							<ion-select [(ngModel)]="sortType" [selectOptions]="sortOptions" (ionChange)="switchSort($event)">
+								<ion-option *ngFor="let sort of sorts" [value]="sort.value">{{ sort.key }}</ion-option>
+							</ion-select>
+						</ion-item>
+					</ion-col>
+
+					<ion-col col-2>
+						<button ion-button icon-only item-end color="secondary" *ngIf="sortDirection == 'DESC'" (click)="switchDirection('ASC')">
+							<ion-icon name="arrow-down"></ion-icon>
+						</button>
+
+						<button ion-button icon-only item-end color="secondary" *ngIf="sortDirection == 'ASC'" (click)="switchDirection('DESC')">
+							<ion-icon name="arrow-up"></ion-icon>
+						</button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</div><!--#review-listing-header-->
+
+		<ion-card *ngFor="let review of reviews.response.reviews">
+			<ion-card-header>
+				{{ review.title }}
+			</ion-card-header>
+
+			<ion-item>
+				<ion-avatar item-start *ngIf="review.user.social_image">
+					<img [src]="review.user.social_image" />
+				</ion-avatar>
+
+				<h2>{{ review.user.display_name }}</h2>
+				<p>
+					<ion-icon name="star" *ngIf="review.score >= 1"></ion-icon>
+					<ion-icon name="star" *ngIf="review.score >= 2"></ion-icon>
+					<ion-icon name="star" *ngIf="review.score >= 3"></ion-icon>
+					<ion-icon name="star" *ngIf="review.score >= 4"></ion-icon>
+					<ion-icon name="star" *ngIf="review.score >= 5"></ion-icon>
+				</p>
+			</ion-item>
+
+			<ion-card-content>
+				<ion-badge class="verified-buyer" *ngIf="review.verified_buyer">Verified Buyer</ion-badge>
+
+				<div [innerHtml]="review.content"></div>
+			</ion-card-content>
+
+			<div class="helpful">
+				<span>Was This Review Helpful?</span>
+
+				<button ion-button icon-start small>
+					<ion-icon name="thumbs-up"></ion-icon> 
+					{{ review.votes_up }}
+				</button>
+
+				<button ion-button icon-start small>
+					<ion-icon name="thumbs-down"></ion-icon>
+					{{ review.votes_down }}
+				</button>
+			</div><!--.helpful-->
+		</ion-card>
+
+		<paging [currentPage]="pageNo" [itemsPerPage]="pageCount" [totalPages]="totalPages" (pageFeed)="paging($event)"></paging>
+
+		<div id="review-listing-create">
+			<button ion-button icon-start color="secondary" (click)="modalCreateReview(reviews.response.products[0], customer)">
+				<ion-icon name="create"></ion-icon>
+				Write A Review
+			</button>
+		</div><!--#review-listing-create-->
+	</section><!--#review-listing-->
+
+	
+</div>

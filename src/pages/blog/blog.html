@@ -1,0 +1,44 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+
+	<div *ngIf="blogList != undefined" #bloglist>
+		<section id="header">
+			<p>Total number of posts <strong>{{ blogList.total_number }}</strong></p>
+		</section><!--#header-->
+
+		<paging 
+			(pageFeed)="pageBlog($event)"
+			[currentPage]="blogList.current_page" 
+			[itemsPerPage]="noOfItems" 
+			[totalPages]="blogList.last_page">		
+		</paging>
+
+		<section id="posts">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-12 col-sm-6 *ngFor="let post of blogList.posts">
+						<post-list [post]="post"></post-list>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</section><!--#posts-->
+
+		<paging 
+			(pageFeed)="pageBlog($event)"
+			[currentPage]="blogList.current_page" 
+			[itemsPerPage]="noOfItems" 
+			[totalPages]="blogList.last_page">		
+		</paging>
+	</div>
+
+	<loading *ngIf="blogList == undefined"></loading>
+</ion-content>

@@ -1,0 +1,132 @@
+<ion-header *ngIf="order != undefined">
+	<ion-navbar>
+		<ion-title>Order # {{ order.increment_id }} <ion-icon name="phone-portrait" *ngIf="order.extension_attributes.from_app == true"></ion-icon></ion-title>
+		<p class="status"><ion-badge color="secondary">{{ order.status }}</ion-badge></p>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding *ngIf="order != undefined">
+	<section id="order-items">
+		<button ion-button block (click)="showItems()">{{ showItemButton }}</button>
+
+		<ion-grid *ngIf="items != undefined && showItem == true">
+			<ion-row *ngFor="let item of items" class="item">
+				<ion-col col-2 class="image">
+					<img src="{{ item.product.imageThumbnailPath() }}" alt="Thumbnail" />
+				</ion-col><!--.image-->
+
+				<ion-col col-7 class="text">
+					<p class="name">{{ item.order.name }}</p>
+					<p class="sku">SKU: {{ item.order.sku }}</p>
+					<p class="price">{{ item.order.base_price | currency }} x {{ item.order.qty_ordered }}</p>
+				</ion-col><!--.text-->
+
+				<ion-col col-3 class="subtotal">
+					<p>{{ item.order.base_row_total | currency }}</p>
+				</ion-col><!--.subtotal-->
+			</ion-row>
+
+			<ion-row>
+				<ion-col col-12 text-right>
+					<button ion-button icon-only (click)="showItems()"><ion-icon name="arrow-dropup"></ion-icon></button>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</section><!--#order-items-->
+
+	<section id="items-total">
+		<ion-card id="items-total-card">
+			<ion-card-header>
+				Totals
+			</ion-card-header>
+
+			<ion-card-content>
+				<ion-grid>
+					<ion-row *ngIf="order.base_subtotal != undefined">
+						<ion-col col-5>Sub-Total</ion-col>
+						<ion-col col-7 text-right>{{ order.base_subtotal | currency }}</ion-col>
+					</ion-row>
+
+					<ion-row *ngIf="order.base_shipping_amount != undefined">
+						<ion-col col-5>Shipping</ion-col>
+						<ion-col col-7 text-right>{{ order.base_shipping_amount | currency }}</ion-col>
+					</ion-row>
+
+					<ion-row *ngIf="order.getBaseAdditionalFee() != undefined">
+						<ion-col col-5>Fees</ion-col>
+						<ion-col col-7 text-right>{{ order.getBaseAdditionalFee() | currency }}</ion-col>
+					</ion-row>
+
+					<ion-row *ngIf="order.base_tax_amount != undefined">
+						<ion-col col-5>Taxes</ion-col>
+						<ion-col col-7 text-right>{{ order.base_tax_amount | currency }}</ion-col>
+					</ion-row>
+
+					<ion-row *ngIf="order.base_grand_total != undefined">
+						<ion-col col-5>Grand Total</ion-col>
+						<ion-col col-7 text-right>{{ order.base_grand_total | currency }}</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-card-content>
+		</ion-card><!--#items-total-card-->
+	</section><!--#items-total-->
+
+	<section id="order-addresses">
+		<ion-card id="shipping-address-card" class="address">
+			<ion-card-header>
+				Shipping Address
+			</ion-card-header>
+
+			<ion-card-content>
+				<p class="shipping-method">Shipping Method: {{ order.shipping_description }}</p>
+				<br/>
+				<p class="fullname">{{ order.fullCustomerName() }}</p>
+				<p class="company">{{ order.extension_attributes.get_shipping_assignment(0).shipping.address.company }}</p>
+				<p class="street-address">{{ order.extension_attributes.get_shipping_assignment(0).shipping.address.fullStreetAddress() }}</p>
+				<p class="metro-address">{{ order.extension_attributes.get_shipping_assignment(0).shipping.address.fullMetroAddress() }}</p>
+				<p class="country">{{ order.extension_attributes.get_shipping_assignment(0).shipping.address.country_id }}</p>
+				<p class="phone">{{ order.extension_attributes.get_shipping_assignment(0).shipping.address.telephone }}</p>
+			</ion-card-content>
+		</ion-card><!--.address-->
+
+		<ion-card id="billing-address-card" class="address">
+			<ion-card-header>
+				Billing Address
+			</ion-card-header>
+
+			<ion-card-content>
+				<p class="payment-method">Payment Method: {{ order.payment.get_additional_information(0) }}</p>
+				<br/>
+				<p class="fullname">{{ order.fullCustomerName() }}</p>
+				<p class="company">{{ order.billing_address.company }}</p>
+				<p class="street-address">{{ order.billing_address.fullStreetAddress() }}</p>
+				<p class="metro-address">{{ order.billing_address.fullMetroAddress() }}</p>
+				<p class="country">{{ order.billing_address.country_id }}</p>
+				<p class="phone">{{ order.billing_address.telephone }}</p>
+			</ion-card-content>
+		</ion-card><!--.address-->
+	</section><!--#order-addresses-->
+
+	<section id="status-history" *ngIf="order != undefined && order.status_histories.length > 0">
+		<button ion-button block (click)="showStatuses()">{{ showStatusButton }}</button>
+
+		<ion-card id="status-history-card" *ngIf="showStatus">
+			<ion-card-header>
+				Status History
+			</ion-card-header>
+
+			<ion-card-content>
+				<ion-item *ngFor="let status of order.status_histories" class="item">
+					<p class="comment">{{ status.comment }}</p>
+					<p class="date">{{ status.created_at | date: 'longDate' }}</p>
+					<p class="status">{{ status.status }}</p>
+				</ion-item>
+			</ion-card-content>
+		</ion-card>
+	</section><!--#status-history-->
+</ion-content>
+
+<ion-footer padding>
+	<button ion-button (click)="dismiss()">Close</button>
+	<button ion-button color="secondary" [disabled]="!showDownloadButton" (click)="downloadInvoice()">Download Invoice</button>
+</ion-footer>

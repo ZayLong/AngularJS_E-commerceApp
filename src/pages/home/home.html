@@ -1,0 +1,82 @@
+<ion-header>
+	<tis-header></tis-header>
+</ion-header>
+
+<ion-content padding>
+	<ion-refresher (ionRefresh)="refresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			refreshingSpinner="circles">
+		</ion-refresher-content>
+	</ion-refresher>
+	
+	<section id="slider">
+		<ion-slides #homeSlider zoom="false" loop="true">
+			<ion-slide *ngFor="let slide of slides" (click)="gotoSearchWithSlide(slide)">
+				<img src="{{ slide.image }}" />
+			</ion-slide>
+		</ion-slides><!--#homeSlider-->
+	</section><!--#slider-->
+
+	<section id="new-arrivals" class="new-top-wrappers">
+		<button class="show-buttons" ion-button block (click)="toggleNewTop('new')">New Arrivals</button>
+
+		<ion-grid class="products" *ngIf="showNewArrivals == true">
+			<ion-row>
+				<ion-col col-6 col-sm-4 col-md-3 col-lg-2 *ngFor="let item of newArrivals">
+					<home-item [item]="item" [logged]="logged" [cart]="cart">
+					</home-item>
+				</ion-col>
+			</ion-row>
+		</ion-grid><!--.products-->
+
+		<loading *ngIf="newArrivals == undefined"></loading>
+	</section><!--#new-arrivals-->
+
+	<section id="top-picks" class="new-top-wrappers">
+		<button class="show-buttons" ion-button block (click)="toggleNewTop('top')">Top Picks</button>
+
+		<ion-grid class="products" *ngIf="showTopPicks == true">
+			<ion-row>
+				<ion-col col-6 col-sm-4 col-md-3 col-lg-2 class="product" *ngFor="let item of topPicks">
+					<home-item [item]="item" [logged]="logged" [cart]="cart">
+					</home-item>
+				</ion-col><!--.product-->
+			</ion-row>
+		</ion-grid><!--.products-->
+	</section><!--#top-picks-->
+
+	<section id="front-deals">
+		<ion-grid>
+			<ion-row class="top">
+				<ion-col *ngFor="let deal of deals" class="front-deal-image" col-6 col-sm-6 col-md-4 col-lg-3 (click)="gotoSearchWithDeal(deal)">
+					<img src="{{ deal.image }}" alt="{{ deal.name }}" width="280" height="280" />
+				</ion-col>
+			</ion-row><!--.top-->
+
+			<ion-row class="middle">
+				<ion-col class="front-deal-image" col-12 col-md-12>
+					<img src="assets/img/home/tisrewards.jpg" alt="TIS Rewards" width="535" height="180" (click)="gotoPage('RewardsPage')" />
+				</ion-col><!--.front-deal-image-->
+
+				<!--
+				<ion-col class="front-deal-image" col-12 col-md-6>
+					<img src="assets/img/home/spatables.jpg" alt="Spa Tables" width="568" height="175" />
+				</ion-col><!--.front-deal-image-->
+			</ion-row><!--.middle-->
+		</ion-grid>
+	</section><!--#front-deals-->
+
+	<section id="blog">
+		<h1 class="header">Latest in Beauty <button ion-button float-right small (click)="gotoPage('BlogPage')" text-center>More Posts</button></h1>
+
+		<ion-grid>
+			<ion-row>
+				<ion-col col-12 col-sm-6 *ngFor="let post of posts">
+					<post-list [post]="post"></post-list>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+		
+	</section><!--#blog-->
+</ion-content>

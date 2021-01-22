@@ -1,0 +1,22 @@
+page-contactus {
+	#contacting-card{
+		ion-list{
+			button, a{ font-size: 1.4rem; }
+		}
+
+		.times{ font-size: 1.3rem; }
+	}
+
+	#map-card{
+		#map{
+			height: 300px;
+		}
+
+		address{
+			margin-top: 18px;
+			font-size: 1.3rem;
+			font-style: normal;
+		}
+	}
+	
+}
